@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "153206603738",
+    "project_id": "gossip-2a89e",
+    "storage_bucket": "gossip-2a89e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153206603738:android:456810c66e8552a76a4ae3",
+        "android_client_info": {
+          "package_name": "com.chandralok.gossip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153206603738-agfuvlcllpu1ughci8ar34jprl30v2qp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4alu2W-wpO7YPWifTMlXaYfUM4w7Iwo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153206603738-agfuvlcllpu1ughci8ar34jprl30v2qp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153206603738-607tfgtdvjv5erllb03m4t90duhi2fmc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chandralok.gossip"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
