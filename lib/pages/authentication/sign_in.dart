@@ -79,6 +79,8 @@ class _SignInPageState extends State<SignInPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TextButton(
+                      style: const ButtonStyle(
+                          splashFactory: NoSplash.splashFactory),
                       onPressed: () {},
                       child: const Text(
                         "Forgot Password?",
