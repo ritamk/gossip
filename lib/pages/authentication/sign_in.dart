@@ -33,51 +33,47 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
               children: <Widget>[
                 // Email form field
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  decoration: authTextContainerDecoration(),
-                  child: TextFormField(
-                    decoration: authTextInputDecoration("Email", Icons.mail),
-                    focusNode: _mailFocusNode,
-                    validator: (val) =>
-                        val!.isEmpty ? "Please enter your name" : null,
-                    onChanged: (val) => mail = val,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (val) =>
-                        FocusScope.of(context).requestFocus(_passFocusNode),
-                  ),
+                TextFormField(
+                  decoration: authTextInputDecoration("Email", Icons.mail),
+                  focusNode: _mailFocusNode,
+                  validator: (val) =>
+                      val!.isEmpty ? "Please enter your name" : null,
+                  onChanged: (val) => mail = val,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (val) =>
+                      FocusScope.of(context).requestFocus(_passFocusNode),
                 ),
                 const SizedBox(
                   height: 20.0,
                   width: 0.0,
                 ),
                 // Password form field
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  decoration: authTextContainerDecoration(),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.vpn_key),
-                      labelText: "Password",
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      suffixIcon: IconButton(
-                          onPressed: () => setState(
-                                () => _hidePassword = !_hidePassword,
-                              ),
-                          icon: (_hidePassword)
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off)),
-                    ),
-                    focusNode: _passFocusNode,
-                    validator: (val) =>
-                        val!.isEmpty ? "Please enter your name" : null,
-                    onChanged: (val) => pass = val,
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (val) => FocusScope.of(context).unfocus(),
-                    obscureText: _hidePassword,
+                TextFormField(
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    fillColor: Colors.grey.shade300,
+                    filled: true,
+                    prefixIcon: const Icon(Icons.vpn_key),
+                    labelText: "Password",
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    border: textFieldBorder(),
+                    focusedBorder: textFieldBorder(),
+                    errorBorder: textFieldBorder(),
+                    suffixIcon: IconButton(
+                        onPressed: () => setState(
+                              () => _hidePassword = !_hidePassword,
+                            ),
+                        icon: (_hidePassword)
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
                   ),
+                  focusNode: _passFocusNode,
+                  validator: (val) =>
+                      val!.isEmpty ? "Please enter your name" : null,
+                  onChanged: (val) => pass = val,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (val) => FocusScope.of(context).unfocus(),
+                  obscureText: _hidePassword,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

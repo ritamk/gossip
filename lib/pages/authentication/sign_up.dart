@@ -35,74 +35,63 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: <Widget>[
                 // Name form field
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 4.0),
-                  decoration: authTextContainerDecoration(),
-                  child: TextFormField(
-                    decoration: authTextInputDecoration("Name", Icons.person),
-                    focusNode: _nameFocusNode,
-                    validator: (val) =>
-                        val!.isEmpty ? "Please enter your name" : null,
-                    onChanged: (val) => name = val,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (val) =>
-                        FocusScope.of(context).requestFocus(_mailFocusNode),
-                  ),
+                TextFormField(
+                  decoration: authTextInputDecoration("Name", Icons.person),
+                  focusNode: _nameFocusNode,
+                  validator: (val) =>
+                      val!.isEmpty ? "Please enter your name" : null,
+                  onChanged: (val) => name = val,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (val) =>
+                      FocusScope.of(context).requestFocus(_mailFocusNode),
                 ),
                 const SizedBox(
                   height: 20.0,
                   width: 0.0,
                 ),
                 // Email form field
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 4.0),
-                  decoration: authTextContainerDecoration(),
-                  child: TextFormField(
-                    decoration: authTextInputDecoration("Email", Icons.mail),
-                    focusNode: _mailFocusNode,
-                    validator: (val) =>
-                        val!.isEmpty ? "Please enter a valid email" : null,
-                    onChanged: (val) => mail = val,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (val) =>
-                        FocusScope.of(context).requestFocus(_passFocusNode),
-                  ),
+                TextFormField(
+                  decoration: authTextInputDecoration("Email", Icons.mail),
+                  focusNode: _mailFocusNode,
+                  validator: (val) =>
+                      val!.isEmpty ? "Please enter a valid email" : null,
+                  onChanged: (val) => mail = val,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (val) =>
+                      FocusScope.of(context).requestFocus(_passFocusNode),
                 ),
                 const SizedBox(
                   height: 20.0,
                   width: 0.0,
                 ),
                 // Password form field
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 4.0),
-                  decoration: authTextContainerDecoration(),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.vpn_key),
-                      labelText: "Password",
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      suffixIcon: IconButton(
-                          onPressed: () => setState(
-                                () => _hidePassword = !_hidePassword,
-                              ),
-                          icon: (_hidePassword)
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off)),
-                    ),
-                    focusNode: _passFocusNode,
-                    validator: (val) => (val!.length < 6)
-                        ? "Please enter a password with\nmore than 6 characters"
-                        : null,
-                    onChanged: (val) => pass = val,
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (val) => FocusScope.of(context).unfocus(),
-                    obscureText: _hidePassword,
+                TextFormField(
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    fillColor: Colors.grey.shade300,
+                    filled: true,
+                    prefixIcon: const Icon(Icons.vpn_key),
+                    labelText: "Password",
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    border: textFieldBorder(),
+                    focusedBorder: textFieldBorder(),
+                    errorBorder: textFieldBorder(),
+                    suffixIcon: IconButton(
+                        onPressed: () => setState(
+                              () => _hidePassword = !_hidePassword,
+                            ),
+                        icon: (_hidePassword)
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
                   ),
+                  focusNode: _passFocusNode,
+                  validator: (val) => (val!.length < 6)
+                      ? "Please enter a password with\nmore than 6 characters"
+                      : null,
+                  onChanged: (val) => pass = val,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (val) => FocusScope.of(context).unfocus(),
+                  obscureText: _hidePassword,
                 ),
                 const SizedBox(
                   height: 40.0,
