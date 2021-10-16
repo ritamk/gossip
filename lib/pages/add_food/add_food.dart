@@ -17,11 +17,10 @@ class _AddFoodState extends State<AddFood> {
   int _price = 0;
   bool _veg = false;
   String _type = "";
-  bool _disc = false;
   int? _discPrice;
   double? _rating;
   String? _about;
-  String? _image = "";
+  String? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -143,22 +142,28 @@ class _AddFoodState extends State<AddFood> {
           if (_formKey.currentState!.validate()) {
             await DatabaseService()
                 .addFoodItem(Food(
-                  name: _name,
-                  price: _price,
-                  veg: _veg,
-                  type: _type,
-                  about: _about,
-                  discPrice: _discPrice,
-                  discPer: _discPrice != null
-                      ? (((_price - _discPrice!.toInt()) /
-                                  _discPrice!.toInt()) *
-                              100)
-                          .round()
-                      : null,
-                  rating: _rating,
-                  foodId: "",
-                ))
-                .then((value) => Navigator.of(context).pop());
+              name: _name,
+              price: _price,
+              veg: _veg,
+              type: _type,
+              about: _about,
+              image: _image,
+              discPrice: _discPrice,
+              discPer: _discPrice != null
+                  ? (((_price - _discPrice!.toInt()) / _discPrice!.toInt()) *
+                          100)
+                      .round()
+                  : null,
+              rating: _rating,
+              foodId: "",
+            ))
+                .then((value) {
+              Navigator.of(context).pop();
+              setState(() {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Item added successfully.")));
+              });
+            });
           }
         },
         child: const Icon(Icons.check),
