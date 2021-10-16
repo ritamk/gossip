@@ -16,23 +16,23 @@ class AuthPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               children: <InlineSpan>[
                 TextSpan(
                   text: "Gossip",
                   style: TextStyle(
                       fontSize: 28.0,
-                      color: Colors.black54,
+                      color: Colors.redAccent.shade200,
                       fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
                   text: "\twelcomes you!",
                   style: TextStyle(
                     fontSize: 26.0,
-                    color: Colors.black54,
+                    color: Colors.redAccent.shade200,
                   ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: "\nPlease login or sign-up to continue.",
                   style: TextStyle(
                     fontSize: 16.0,
@@ -44,13 +44,17 @@ class AuthPage extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  // Sign in button.
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 2.0),
-                    decoration: authButtonDecoration(),
+                    margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    decoration: authButtonDecoration().copyWith(
+                      color: Colors.redAccent.shade200,
+                    ),
                     child: TextButton(
                       style: const ButtonStyle(
                         splashFactory: NoSplash.splashFactory,
@@ -64,10 +68,18 @@ class AuthPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 20.0,
+                    width: 0.0,
+                  ),
+                  // Sign up button
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 2.0),
-                    decoration: authButtonDecoration(),
+                    margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    decoration: authButtonDecoration().copyWith(
+                      color: Colors.black54,
+                    ),
                     child: TextButton(
                       style: const ButtonStyle(
                         splashFactory: NoSplash.splashFactory,

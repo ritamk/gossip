@@ -19,7 +19,7 @@ class Food {
   final String foodId;
   final int? discPrice;
   final int? discPer;
-  final int? rating;
+  final double? rating;
   final String? about;
   final String? image;
 }

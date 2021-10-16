@@ -55,6 +55,25 @@ class DatabaseService {
     }
   }
 
+  Future addFoodItem(Food data) async {
+    try {
+      return await _menuCollection.add({
+        "name": data.name,
+        "about": data.about,
+        "type": data.type,
+        "price": data.price,
+        "veg": data.veg,
+        "discPrice": data.discPrice,
+        "discPer": data.discPer,
+        "rating": data.rating,
+        "image": data.image,
+      }).then((value) => value.update({"fid": value.id}));
+    } catch (e) {
+      print(e.toString());
+      return 1;
+    }
+  }
+
   static DocumentSnapshot? lastDocument;
   final int numDocsToLoad = 10;
 
@@ -105,7 +124,7 @@ List<Food> isolateFoodGetter(List<QueryDocumentSnapshot> snapshot) {
             price: e.data()["price"],
             veg: e.data()["veg"],
             type: e.data()["type"],
-            foodId: e.data()["uid"],
+            foodId: e.data()["fid"],
             about: e.data()["about"],
             image: e.data()["image"],
             discPer: e.data()["discPer"],

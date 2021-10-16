@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gossip/pages/authentication/auth.dart';
+import 'package:gossip/pages/add_food/add_food.dart';
+import 'package:gossip/pages/add_food/show_food.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Gossip',
       debugShowCheckedModeBanner: false,
       theme: mainTheme(),
-      home: const AuthPage(),
+      home: const ShowFood(),
     );
   }
 }
