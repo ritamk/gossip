@@ -1,12 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gossip/pages/add_food/add_food.dart';
-import 'package:gossip/pages/add_food/show_food.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gossip/pages/authentication/auth.dart';
+import 'package:gossip/pages/home/home.dart';
+import 'package:gossip/services/providers.dart';
+import 'package:gossip/shared/loading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +21,12 @@ class MyApp extends StatelessWidget {
       title: 'Gossip',
       debugShowCheckedModeBanner: false,
       theme: mainTheme(),
-      home: const ShowFood(),
+      home: const AuthPage(),
+      // Consumer(
+      //     builder: (context, ref, child) =>
+      //         ref(userModelProvider).data?.value?.uid != null
+      //             ? const HomePage()
+      //             : const AuthPage()),
     );
   }
 }

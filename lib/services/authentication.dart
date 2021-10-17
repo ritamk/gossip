@@ -9,11 +9,6 @@ class AuthenticationService {
     return (user != null) ? UserModel(uid: user.uid) : null;
   }
 
-  /// Keeps track of whether the user is signed in or not.
-  Stream<UserModel?> get user => _firebaseAuth
-      .authStateChanges()
-      .map((User? user) => _userFromFirebase(user));
-
   Future signInAnonymously() async {
     try {
       UserCredential userCredential = await _firebaseAuth.signInAnonymously();
