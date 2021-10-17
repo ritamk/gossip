@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gossip/models/food.dart';
-import 'package:gossip/pages/add_food/add_info_dialog.dart';
+import 'package:gossip/views/add_food/add_info_dialog.dart';
 import 'package:gossip/services/database.dart';
 
 class AddFood extends StatefulWidget {

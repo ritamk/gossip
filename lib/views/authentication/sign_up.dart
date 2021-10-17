@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gossip/pages/home/home.dart';
+import 'package:gossip/views/home/home.dart';
 import 'package:gossip/services/authentication.dart';
 import 'package:gossip/shared/buttons.dart';
 import 'package:gossip/shared/loading.dart';

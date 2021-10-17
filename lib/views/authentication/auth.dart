@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gossip/pages/authentication/sign_in.dart';
-import 'package:gossip/pages/authentication/sign_up.dart';
+import 'package:gossip/views/authentication/sign_in.dart';
+import 'package:gossip/views/authentication/sign_up.dart';
 import 'package:gossip/shared/buttons.dart';
 
 class AuthPage extends StatelessWidget {

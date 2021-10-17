@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gossip/pages/add_food/add_food.dart';
+import 'package:gossip/views/add_food/add_food.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/loading.dart';
 

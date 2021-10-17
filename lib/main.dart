@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gossip/pages/authentication/auth.dart';
-import 'package:gossip/pages/home/home.dart';
+import 'package:gossip/views/authentication/auth.dart';
+import 'package:gossip/views/home/home.dart';
 import 'package:gossip/services/providers.dart';
-import 'package:gossip/shared/loading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
