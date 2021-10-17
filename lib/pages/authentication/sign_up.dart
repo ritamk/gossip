@@ -107,9 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: const ButtonStyle(
                       splashFactory: NoSplash.splashFactory,
                     ),
-                    onPressed: () async {
-                      await signUpLogic(context);
-                    },
+                    onPressed: () async => await signUpLogic(context),
                     child: loading
                         ? const Loading(
                             color: Colors.white,

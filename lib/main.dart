@@ -21,12 +21,11 @@ class MyApp extends StatelessWidget {
       title: 'Gossip',
       debugShowCheckedModeBanner: false,
       theme: mainTheme(),
-      home: const AuthPage(),
-      // Consumer(
-      //     builder: (context, ref, child) =>
-      //         ref(userModelProvider).data?.value?.uid != null
-      //             ? const HomePage()
-      //             : const AuthPage()),
+      home: Consumer(
+          builder: (context, ref, child) =>
+              ref(userModelProvider).data?.value?.uid != null
+                  ? const HomePage()
+                  : const AuthPage()),
     );
   }
 }

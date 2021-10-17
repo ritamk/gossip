@@ -12,7 +12,7 @@ class AddInfoDialog extends StatelessWidget {
         "1. Name, Price, Veg and Type are required.\n"
         "2. Type will always be in small-case.\n"
         "3. Veg is a boolean, so its value will be either \"true\" or \"false\".\n"
-        "4. To indicate no discount is available, leave the field blank.",
+        "4. To indicate no discount is available, leave the Discount Price blank.",
         softWrap: true,
       ),
     );

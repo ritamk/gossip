@@ -103,9 +103,7 @@ class _SignInPageState extends State<SignInPage> {
                     style: const ButtonStyle(
                       splashFactory: NoSplash.splashFactory,
                     ),
-                    onPressed: () async {
-                      await signInLogic(context);
-                    },
+                    onPressed: () async => await signInLogic(context),
                     child: loading
                         ? const Loading(
                             color: Colors.white,

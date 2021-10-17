@@ -118,7 +118,7 @@ class _AddFoodState extends State<AddFood> {
               // Discount Price
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: "discPrice",
+                  labelText: "Discount Price",
                 ),
                 onChanged: (val) => _discPrice = int.parse(val),
               ),
