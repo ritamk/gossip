@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gossip/views/home/home.dart';
 import 'package:gossip/services/authentication.dart';
 import 'package:gossip/shared/buttons.dart';
@@ -41,6 +42,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   validator: (val) =>
                       val!.isEmpty ? "Please enter your name" : null,
                   onChanged: (val) => name = val,
+                  maxLength: 20,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (val) =>
                       FocusScope.of(context).requestFocus(_mailFocusNode),

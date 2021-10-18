@@ -55,6 +55,26 @@ class DatabaseService {
     }
   }
 
+  ExtendedUserData? _extendedUserDataFromSnapshot(DocumentSnapshot snapshot) {
+    try {
+      return ExtendedUserData(
+        uid: uid!,
+        name: snapshot["name"],
+        email: snapshot["email"],
+        phone: snapshot["phone"],
+        address: snapshot["address"],
+      );
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<ExtendedUserData?> get extendedUserData {
+    return _userCollection.doc(uid).snapshots().map(
+        (DocumentSnapshot snapshot) => _extendedUserDataFromSnapshot(snapshot));
+  }
+
   Future addFoodItem(Food data) async {
     try {
       return await _menuCollection.add({
@@ -113,8 +133,6 @@ class DatabaseService {
       return null;
     }
   }
-
-  Future get extendedUserData => _userCollection.doc(uid).get();
 }
 
 List<Food> isolateFoodGetter(List<QueryDocumentSnapshot> snapshot) {

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: mainTheme(),
       home: Consumer(
           builder: (context, ref, child) =>
-              ref(userModelProvider).data?.value?.uid != null
+              ref(userModelStreamProvider).data?.value?.uid != null
                   ? const HomePage()
                   : const AuthPage()),
     );
@@ -31,6 +31,11 @@ class MyApp extends StatelessWidget {
 
 ThemeData mainTheme() {
   return ThemeData(
+    dividerColor: Colors.transparent,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.white10,
+      elevation: 0.0,
+    ),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       elevation: 0.0,
