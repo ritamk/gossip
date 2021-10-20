@@ -26,6 +26,7 @@ class FoodListTile extends StatelessWidget {
           style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
         children: <Widget>[
+          // Food image
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -60,6 +61,37 @@ class FoodListTile extends StatelessWidget {
                 height: 15.0,
                 width: 0.0,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // Veg or not
+                  Text(
+                    food.veg ? "Veg" : "Non-veg",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: food.veg
+                          ? Colors.green.shade800
+                          : Colors.red.shade800,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // Discount percentage
+                  Text(
+                    food.discPer != null
+                        ? "${food.discPer.toString()}% off!"
+                        : "",
+                    style: const TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 15.0,
+                width: 0.0,
+              ),
               // Displays the "price" of the Food item.
               Column(
                 children: <Widget>[
@@ -73,13 +105,29 @@ class FoodListTile extends StatelessWidget {
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87),
-                          children: <InlineSpan>[
-                            const TextSpan(
-                                text: "₹",
-                                style: TextStyle(
-                                    fontSize: 18.0, color: Colors.red)),
-                            TextSpan(text: " ${food.price.toString()}"),
-                          ],
+                          children: food.discPrice != null
+                              ? <InlineSpan>[
+                                  const TextSpan(
+                                      text: "₹",
+                                      style: TextStyle(
+                                          fontSize: 18.0, color: Colors.red)),
+                                  TextSpan(
+                                      text: " ${food.discPrice.toString()} "),
+                                  TextSpan(
+                                    text: "${food.price.toString()}",
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.redAccent.shade700,
+                                        decoration: TextDecoration.lineThrough),
+                                  ),
+                                ]
+                              : <InlineSpan>[
+                                  const TextSpan(
+                                      text: "₹",
+                                      style: TextStyle(
+                                          fontSize: 18.0, color: Colors.red)),
+                                  TextSpan(text: " ${food.price.toString()}"),
+                                ],
                         ),
                       ),
                       // Change quantity button
@@ -92,7 +140,7 @@ class FoodListTile extends StatelessWidget {
                           //     blurRadius: 7.0,
                           //   ),
                           // ],
-                          color: Colors.black45,
+                          color: Colors.yellow.shade900,
                           borderRadius: BorderRadius.circular(25.0),
                         ),
                         child: Row(
@@ -121,7 +169,7 @@ class FoodListTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20.0, width: 0.0),
+                  const SizedBox(height: 15.0, width: 0.0),
                   // Add to cart button
                   InkWell(
                     onTap: () {},
@@ -148,7 +196,7 @@ class FoodListTile extends StatelessWidget {
                           ),
                           SizedBox(
                             height: 0.0,
-                            width: 5.0,
+                            width: 8.0,
                           ),
                           Text(
                             "Add to Cart",
