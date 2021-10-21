@@ -80,17 +80,18 @@ class FoodListTile extends StatelessWidget {
                           text: food.veg ? "Veg" : "Non-veg",
                         ),
                         const TextSpan(
-                            text: "\t\t●\t\t",
-                            style: TextStyle(color: Colors.black38)),
+                            text: "\t\t\t●\t\t\t",
+                            style: TextStyle(
+                                color: Colors.black38, fontSize: 12.0)),
                         TextSpan(
                           text: food.rating.toString(),
                           style: const TextStyle(
                               fontSize: 18.0, color: Colors.black87),
                         ),
-                        const TextSpan(
-                          text: "/5★",
-                          style:
-                              TextStyle(fontSize: 18.0, color: Colors.black45),
+                        TextSpan(
+                          text: " ★",
+                          style: TextStyle(
+                              fontSize: 18.0, color: Colors.yellow.shade700),
                         ),
                       ],
                     ),
@@ -171,12 +172,14 @@ class FoodListTile extends StatelessWidget {
                                   Icons.remove,
                                   color: Colors.white,
                                 )),
+                            const SizedBox(height: 0.0, width: 4.0),
                             const Text(
                               "1",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
+                            const SizedBox(height: 0.0, width: 4.0),
                             IconButton(
                                 onPressed: () {},
                                 icon: const Icon(

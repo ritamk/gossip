@@ -100,8 +100,10 @@ class DatabaseService {
   /// Load the initial list of numDocsToLoad ( = 10) food items.
   Future<List<Food>?> get foodList async {
     try {
-      QuerySnapshot snapshot =
-          await _menuCollection.orderBy("name").limit(numDocsToLoad).get();
+      QuerySnapshot snapshot = await _menuCollection
+          .orderBy("rating", descending: true)
+          .limit(numDocsToLoad)
+          .get();
       List<QueryDocumentSnapshot> snapDocs = snapshot.docs;
       lastDocument = snapDocs.last;
       return await compute<List<QueryDocumentSnapshot>, List<Food>>(
