@@ -95,7 +95,7 @@ class DatabaseService {
   }
 
   static DocumentSnapshot? lastDocument;
-  static const int numDocsToLoad = 5;
+  static const int numDocsToLoad = 10;
 
   /// Load the initial list of numDocsToLoad ( = 10) food items.
   Future<List<Food>?> get foodList async {
