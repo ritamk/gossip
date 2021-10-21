@@ -13,43 +13,36 @@ class FoodList extends StatefulWidget {
 }
 
 class _FoodListState extends State<FoodList> {
-  late Future<List<Food>?> _foodListFuture;
   List<Food>? _foodList;
 
-  Future<List<Food>?> _initFoodLoader() async {
-    return await DatabaseService().foodList;
+  Future<void> _initFoodList() async {
+    return await DatabaseService()
+        .foodList
+        .then((value) => setState(() => _foodList = value));
   }
 
   @override
   void initState() {
     super.initState();
-    _foodListFuture = _initFoodLoader();
+    _initFoodList();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        CupertinoSliverRefreshControl(onRefresh: () async {
-          _foodListFuture = _initFoodLoader();
-          setState(() {});
-        }),
+        CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
         SliverToBoxAdapter(
-          child: FutureBuilder<List<Food>?>(
-            future: _foodListFuture,
-            initialData: const [],
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return snapshot.hasData
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          FoodListTile(food: snapshot.data[index]),
-                    )
-                  : const Loading(color: Colors.black);
-            },
-          ),
+          child: _foodList != null
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: _foodList!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return FoodListTile(food: _foodList![index]);
+                  },
+                )
+              : const Loading(color: Colors.black),
         ),
       ],
       primary: true,
