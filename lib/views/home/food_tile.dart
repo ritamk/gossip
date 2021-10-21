@@ -66,14 +66,33 @@ class FoodListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   // Veg or not
-                  Text(
-                    food.veg ? "Veg" : "Non-veg",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: food.veg
-                          ? Colors.green.shade800
-                          : Colors.red.shade800,
-                      fontWeight: FontWeight.bold,
+                  RichText(
+                    text: TextSpan(
+                      children: <InlineSpan>[
+                        TextSpan(
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: food.veg
+                                ? Colors.green.shade800
+                                : Colors.red.shade800,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          text: food.veg ? "Veg" : "Non-veg",
+                        ),
+                        const TextSpan(
+                            text: "\t\t●\t\t",
+                            style: TextStyle(color: Colors.black38)),
+                        TextSpan(
+                          text: food.rating.toString(),
+                          style: const TextStyle(
+                              fontSize: 18.0, color: Colors.black87),
+                        ),
+                        const TextSpan(
+                          text: "/5★",
+                          style:
+                              TextStyle(fontSize: 18.0, color: Colors.black45),
+                        ),
+                      ],
                     ),
                   ),
                   // Discount percentage
@@ -114,7 +133,7 @@ class FoodListTile extends StatelessWidget {
                                   TextSpan(
                                       text: " ${food.discPrice.toString()} "),
                                   TextSpan(
-                                    text: "${food.price.toString()}",
+                                    text: food.price.toString(),
                                     style: TextStyle(
                                         fontSize: 18.0,
                                         color: Colors.redAccent.shade700,
