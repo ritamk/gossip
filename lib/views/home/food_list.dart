@@ -13,7 +13,8 @@ class FoodList extends StatefulWidget {
 }
 
 class _FoodListState extends State<FoodList> {
-  late Future<List<Food>?> _foodList;
+  late Future<List<Food>?> _foodListFuture;
+  List<Food>? _foodList;
 
   Future<List<Food>?> _initFoodLoader() async {
     return await DatabaseService().foodList;
@@ -22,7 +23,7 @@ class _FoodListState extends State<FoodList> {
   @override
   void initState() {
     super.initState();
-    _foodList = _initFoodLoader();
+    _foodListFuture = _initFoodLoader();
   }
 
   @override
@@ -30,12 +31,12 @@ class _FoodListState extends State<FoodList> {
     return CustomScrollView(
       slivers: <Widget>[
         CupertinoSliverRefreshControl(onRefresh: () async {
-          _foodList = _initFoodLoader();
+          _foodListFuture = _initFoodLoader();
           setState(() {});
         }),
         SliverToBoxAdapter(
-          child: FutureBuilder(
-            future: _foodList,
+          child: FutureBuilder<List<Food>?>(
+            future: _foodListFuture,
             initialData: const [],
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               return snapshot.hasData
