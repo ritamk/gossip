@@ -13,7 +13,9 @@ class FoodList extends StatefulWidget {
 }
 
 class _FoodListState extends State<FoodList> {
-  List<Food>? _foodList;
+  List<Food>? _foodList = [];
+  bool _moreFood = true;
+  final ScrollController _scrollController = ScrollController();
 
   Future<void> _initFoodList() async {
     return await DatabaseService()
@@ -21,10 +23,32 @@ class _FoodListState extends State<FoodList> {
         .then((value) => setState(() => _foodList = value));
   }
 
+  Future<void> _moreFoodList() async {
+    return await DatabaseService().moreFoodList.then((value) {
+      if (_foodList != null && value != null) {
+        setState(() => _foodList = _foodList! + value);
+      } else {
+        setState(() => _moreFood = false);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _initFoodList();
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        _moreFood ? _moreFoodList() : null;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,17 +61,22 @@ class _FoodListState extends State<FoodList> {
               ? ListView.builder(
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: _foodList!.length,
+                  itemCount: _foodList!.length + 1,
                   itemBuilder: (BuildContext context, int index) {
-                    return FoodListTile(food: _foodList![index]);
-                  },
-                )
+                    if (index < _foodList!.length) {
+                      return FoodListTile(food: _foodList![index]);
+                    } else {
+                      return _moreFood
+                          ? const Loading(color: Colors.black)
+                          : const SizedBox(height: 0.0, width: 0.0);
+                    }
+                  })
               : const Loading(color: Colors.black),
         ),
       ],
-      primary: true,
       physics:
           const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      controller: _scrollController,
     );
   }
 }

@@ -95,7 +95,7 @@ class DatabaseService {
   }
 
   static DocumentSnapshot? lastDocument;
-  final int numDocsToLoad = 10;
+  static const int numDocsToLoad = 5;
 
   /// Load the initial list of numDocsToLoad ( = 10) food items.
   Future<List<Food>?> get foodList async {
@@ -120,7 +120,7 @@ class DatabaseService {
   Future<List<Food>?> get moreFoodList async {
     try {
       QuerySnapshot snapshot = await _menuCollection
-          .orderBy("name")
+          .orderBy("rating", descending: true)
           .startAfterDocument(lastDocument!)
           .limit(numDocsToLoad)
           .get();
