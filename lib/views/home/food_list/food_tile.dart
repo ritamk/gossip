@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gossip/models/food.dart';
-import 'package:gossip/views/home/food_list/add_cart_button.dart';
-import 'package:gossip/views/home/food_list/change_qty_button.dart';
+import 'package:gossip/views/home/food_list/add_cart_buttons.dart';
 
 class FoodListTile extends StatelessWidget {
   const FoodListTile({Key? key, required this.food}) : super(key: key);
@@ -115,52 +114,7 @@ class FoodListTile extends StatelessWidget {
                 width: 0.0,
               ),
               // Displays the "price" of the Food item.
-              Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(
-                          style: const TextStyle(
-                              fontSize: 22.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87),
-                          children: food.discPrice != null
-                              ? <InlineSpan>[
-                                  const TextSpan(
-                                      text: "₹",
-                                      style: TextStyle(
-                                          fontSize: 18.0, color: Colors.red)),
-                                  TextSpan(
-                                      text: " ${food.discPrice.toString()} "),
-                                  TextSpan(
-                                    text: food.price.toString(),
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Colors.redAccent.shade700,
-                                        decoration: TextDecoration.lineThrough),
-                                  ),
-                                ]
-                              : <InlineSpan>[
-                                  const TextSpan(
-                                      text: "₹",
-                                      style: TextStyle(
-                                          fontSize: 18.0, color: Colors.red)),
-                                  TextSpan(text: " ${food.price.toString()}"),
-                                ],
-                        ),
-                      ),
-                      // Change quantity button
-                      const ChangeQuantityButton(),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0, width: 0.0),
-                  // Add to cart button
-                  AddToCartButton(foodID: food.foodId),
-                ],
-              ),
+              AddToCartButtons(food: food),
             ],
           ),
         ],
