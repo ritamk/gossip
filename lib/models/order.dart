@@ -47,7 +47,7 @@ class CartLocalData {
 
   factory CartLocalData.fromJson(Map<String, dynamic> json) {
     return CartLocalData(
-      foodID: json["foodId"],
+      foodID: json["foodID"],
       qty: json["qty"],
     );
   }

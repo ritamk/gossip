@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gossip/models/food.dart';
+import 'package:gossip/models/order.dart';
 import 'package:gossip/shared/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +17,7 @@ class AddToCartButtons extends StatefulWidget {
 class _AddToCartButtonsState extends State<AddToCartButtons> {
   int _qty = 1;
   bool _addToCartLoading = false;
+  final String _addToCartKey = "add_to_cart_button";
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +60,6 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
             // Change quantity button
             Container(
               decoration: BoxDecoration(
-                // boxShadow: <BoxShadow>[
-                //   BoxShadow(
-                //     color: Colors.black45.withOpacity(0.5),
-                //     offset: const Offset(0.0, 1.0),
-                //     blurRadius: 7.0,
-                //   ),
-                // ],
                 color: Colors.yellow.shade900,
                 borderRadius: BorderRadius.circular(25.0),
               ),
@@ -96,18 +93,12 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
         const SizedBox(height: 15.0, width: 0.0),
         // Add to cart button
         InkWell(
-          onTap: () async => await addToCart(context),
+          onTap: () async => await addToCart(context)
+              .then((value) => setState(() => _addToCartLoading = false)),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 14.0),
             decoration: BoxDecoration(
-              // boxShadow: <BoxShadow>[
-              //   BoxShadow(
-              //     color: Colors.red.withOpacity(0.5),
-              //     offset: const Offset(0.0, 1.0),
-              //     blurRadius: 7.0,
-              //   ),
-              // ],
               color: Colors.red,
               borderRadius: BorderRadius.circular(25.0),
             ),
@@ -155,23 +146,36 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
   Future<void> addToCart(BuildContext context) async {
     setState(() => _addToCartLoading = true);
     final sharedPref = await SharedPreferences.getInstance();
+    final Future<bool> stringSet;
+
+    final List<CartLocalData> cartLocalData = [
+      CartLocalData(foodID: widget.food.foodId, qty: _qty.toString())
+    ];
+    List<CartLocalData> previousData = [];
 
     try {
-      await sharedPref
-          .setString(widget.food.foodId, _qty.toString())
-          .whenComplete(() => setState(() {
-                _addToCartLoading = false;
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(
-                    "Item has been added to cart successfully.",
-                    textAlign: TextAlign.center,
-                  ),
-                ));
-              }));
+      if (sharedPref.getString(_addToCartKey)?.isNotEmpty ?? false) {
+        jsonDecode(sharedPref.getString(_addToCartKey).toString()).forEach(
+            (json) =>
+                previousData += [CartLocalData.fromJson(json)] + cartLocalData);
+
+        stringSet =
+            sharedPref.setString(_addToCartKey, jsonEncode(previousData));
+      } else {
+        stringSet =
+            sharedPref.setString(_addToCartKey, jsonEncode(cartLocalData));
+      }
+      stringSet.whenComplete(() => setState(() {
+            _addToCartLoading = false;
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                "Item has been added to cart successfully.",
+                textAlign: TextAlign.center,
+              ),
+            ));
+          }));
     } catch (e) {
-      print(e.toString());
       setState(() {
-        _addToCartLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
             "Something went wrong, Item could not be added.",
