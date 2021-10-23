@@ -7,13 +7,11 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: (color == Colors.white)
-          ? Theme(
-              data: ThemeData.dark(), child: const CupertinoActivityIndicator())
-          : Theme(
-              data: ThemeData.fallback(),
-              child: const CupertinoActivityIndicator()),
-    );
+    return (color == Colors.white)
+        ? Theme(
+            data: ThemeData.dark(), child: const CupertinoActivityIndicator())
+        : Theme(
+            data: ThemeData.fallback(),
+            child: const CupertinoActivityIndicator());
   }
 }
