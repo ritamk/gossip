@@ -29,6 +29,7 @@ class DatabaseService {
         },
         "order": <OrderData>[],
         "orderHistory": <OrderData>[],
+        "cart": <CartData>[]
       });
     } catch (e) {
       print(e.toString());
@@ -53,6 +54,52 @@ class DatabaseService {
       print(e.toString());
       return 1;
     }
+  }
+
+  Future updateCartData(CartData data) async {
+    try {
+      return await _userCollection.doc(uid).update({
+        "cart": FieldValue.arrayUnion([
+          {
+            "item": data.item,
+            "qty": data.qty,
+          }
+        ])
+      });
+    } catch (e) {
+      print(e.toString());
+      return 1;
+    }
+  }
+
+  Future removeCartData() async {
+    try {
+      return await _userCollection.doc(uid).update({
+        "cart": FieldValue.arrayRemove([]),
+      });
+    } catch (e) {
+      print(e.toString());
+      return 1;
+    }
+  }
+
+  List<CartData?> _cartDataFromSnapshot(DocumentSnapshot snapshot) {
+    try {
+      final List<dynamic> cartSnap = snapshot.get("cart");
+      return cartSnap
+          .map((dynamic e) => CartData(item: e["item"], qty: e["qty"]))
+          .toList();
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Stream<List<CartData?>> get cartData {
+    return _userCollection
+        .doc(uid)
+        .snapshots()
+        .map((DocumentSnapshot snapshot) => _cartDataFromSnapshot(snapshot));
   }
 
   ExtendedUserData? _extendedUserDataFromSnapshot(DocumentSnapshot snapshot) {
@@ -116,7 +163,7 @@ class DatabaseService {
     }
   }
 
-  /// Load the next numDocsToLoad ( = 10) food items.
+  /// Load the next numDocsToLoad(=10) food items.
   Future<List<Food>?> get moreFoodList async {
     try {
       QuerySnapshot snapshot = await _menuCollection

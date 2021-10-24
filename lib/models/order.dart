@@ -28,3 +28,13 @@ class FetchOrderData {
   final String name;
   final Timestamp time;
 }
+
+class CartData {
+  CartData({
+    required this.item,
+    required this.qty,
+  });
+
+  final String item;
+  final String qty;
+}
