@@ -28,27 +28,3 @@ class FetchOrderData {
   final String name;
   final Timestamp time;
 }
-
-class CartLocalData {
-  CartLocalData({
-    required this.foodID,
-    required this.qty,
-  });
-
-  String foodID = "";
-  String qty = "0";
-
-  Map<String, dynamic> toJson() {
-    return {
-      "foodID": foodID,
-      "qty": qty,
-    };
-  }
-
-  factory CartLocalData.fromJson(Map<String, dynamic> json) {
-    return CartLocalData(
-      foodID: json["foodID"],
-      qty: json["qty"],
-    );
-  }
-}

@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/food.dart';
-import 'package:gossip/models/order.dart';
 import 'package:gossip/shared/loading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddToCartButtons extends StatefulWidget {
   const AddToCartButtons({Key? key, required this.food}) : super(key: key);
@@ -92,41 +89,46 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
         ),
         const SizedBox(height: 15.0, width: 0.0),
         // Add to cart button
-        InkWell(
-          onTap: () async => await addToCart(context)
-              .then((value) => setState(() => _addToCartLoading = false)),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 14.0),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(25.0),
+        Consumer(builder: (context, ref, child) {
+          return InkWell(
+            onTap: () async {
+              setState(() => _addToCartLoading = true);
+              await Future.delayed(const Duration(seconds: 1));
+              setState(() => _addToCartLoading = false);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 14.0),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: !_addToCartLoading
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Icon(
+                          Icons.add_circle_outline,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 0.0,
+                          width: 8.0,
+                        ),
+                        Text(
+                          "Add to Cart",
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                  : const Loading(color: Colors.white),
             ),
-            child: !_addToCartLoading
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Icon(
-                        Icons.add_circle_outline,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        height: 0.0,
-                        width: 8.0,
-                      ),
-                      Text(
-                        "Add to Cart",
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  )
-                : const Loading(color: Colors.white),
-          ),
-        ),
+          );
+        }),
       ],
     );
   }
@@ -140,49 +142,6 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
   void reduceQty() {
     if (_qty > 1) {
       setState(() => _qty--);
-    }
-  }
-
-  Future<void> addToCart(BuildContext context) async {
-    setState(() => _addToCartLoading = true);
-    final sharedPref = await SharedPreferences.getInstance();
-    final Future<bool> stringSet;
-
-    final List<CartLocalData> cartLocalData = [
-      CartLocalData(foodID: widget.food.foodId, qty: _qty.toString())
-    ];
-    List<CartLocalData> previousData = [];
-
-    try {
-      if (sharedPref.getString(_addToCartKey)?.isNotEmpty ?? false) {
-        jsonDecode(sharedPref.getString(_addToCartKey).toString()).forEach(
-            (json) =>
-                previousData += [CartLocalData.fromJson(json)] + cartLocalData);
-
-        stringSet =
-            sharedPref.setString(_addToCartKey, jsonEncode(previousData));
-      } else {
-        stringSet =
-            sharedPref.setString(_addToCartKey, jsonEncode(cartLocalData));
-      }
-      stringSet.whenComplete(() => setState(() {
-            _addToCartLoading = false;
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                "Item has been added to cart successfully.",
-                textAlign: TextAlign.center,
-              ),
-            ));
-          }));
-    } catch (e) {
-      setState(() {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-            "Something went wrong, Item could not be added.",
-            textAlign: TextAlign.center,
-          ),
-        ));
-      });
     }
   }
 }
