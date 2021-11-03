@@ -79,11 +79,12 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
                   ),
                   const SizedBox(height: 0.0, width: 4.0),
                   IconButton(
-                      onPressed: () => increaseQty(),
-                      icon: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),
+                    onPressed: () => increaseQty(),
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -139,6 +140,8 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
     setState(() => _addToCartLoading = true);
     DatabaseService(uid: ref(userModelStreamProvider).data!.value!.uid)
         .updateCartData(CartData(
+          name: widget.food.name,
+          price: widget.food.price,
           item: widget.food.foodId,
           qty: _qty.toString(),
         ))
@@ -146,7 +149,7 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
               _addToCartLoading = false;
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(result != 1
-                      ? "Item was successfully added to the cart"
+                      ? "Item added to cart!"
                       : "Something went wrong, item could not be added to the cart")));
             }));
   }

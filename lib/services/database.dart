@@ -5,8 +5,9 @@ import 'package:gossip/models/order.dart';
 import 'package:gossip/models/user.dart';
 
 class DatabaseService {
-  DatabaseService({this.uid});
+  DatabaseService({this.uid, this.foodID});
   final String? uid;
+  final String? foodID;
 
   final CollectionReference _menuCollection =
       FirebaseFirestore.instance.collection("Menu");
@@ -61,6 +62,8 @@ class DatabaseService {
       return await _userCollection.doc(uid).update({
         "cart": FieldValue.arrayUnion([
           {
+            "name": data.name,
+            "price": data.price,
             "item": data.item,
             "qty": data.qty,
           }
@@ -83,23 +86,39 @@ class DatabaseService {
     }
   }
 
-  List<CartData?> _cartDataFromSnapshot(DocumentSnapshot snapshot) {
+  int _cartCountFromSnapshot(DocumentSnapshot snapshot) {
     try {
       final List<dynamic> cartSnap = snapshot.get("cart");
-      return cartSnap
-          .map((dynamic e) => CartData(item: e["item"], qty: e["qty"]))
+      return cartSnap.length;
+    } catch (e) {
+      print(e.toString());
+      return 0;
+    }
+  }
+
+  Stream<int> get cartCount {
+    return _userCollection
+        .doc(uid)
+        .snapshots()
+        .map((DocumentSnapshot snapshot) => _cartCountFromSnapshot(snapshot));
+  }
+
+  Future<List<CartData>> get cartList async {
+    try {
+      DocumentSnapshot snap = await _userCollection.doc(uid).get();
+      List<dynamic> cartIn = snap.get("cart");
+      return cartIn
+          .map((e) => CartData(
+                item: e["item"],
+                qty: e["qty"],
+                name: e["name"],
+                price: e["price"],
+              ))
           .toList();
     } catch (e) {
       print(e.toString());
       return [];
     }
-  }
-
-  Stream<List<CartData?>> get cartData {
-    return _userCollection
-        .doc(uid)
-        .snapshots()
-        .map((DocumentSnapshot snapshot) => _cartDataFromSnapshot(snapshot));
   }
 
   ExtendedUserData? _extendedUserDataFromSnapshot(DocumentSnapshot snapshot) {

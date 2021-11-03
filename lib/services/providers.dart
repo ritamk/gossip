@@ -11,3 +11,6 @@ final userModelStreamProvider = StreamProvider<UserModel?>((ref) => ref
     .watch(firebaseAuthProvider)
     .authStateChanges()
     .map((User? user) => (user != null) ? UserModel(uid: user.uid) : null));
+
+/// Returns the index of selected bottom navigation bar item.
+final bottomNavSelectedProvider = StateProvider((ref) => 0);

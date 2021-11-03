@@ -105,8 +105,12 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     onPressed: () async => await signInLogic(context),
                     child: loading
-                        ? const Loading(
-                            color: Colors.white,
+                        ? const Center(
+                            widthFactor: 0.0,
+                            heightFactor: 0.0,
+                            child: Loading(
+                              color: Colors.white,
+                            ),
                           )
                         : const Text(
                             "Sign-in",

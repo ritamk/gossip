@@ -8,9 +8,6 @@ class FoodListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Device measurements to help with drawing the food image.
-    final double width = MediaQuery.of(context).size.width / 2.0;
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
@@ -30,12 +27,7 @@ class FoodListTile extends StatelessWidget {
           // Food image
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(25.0),
-                topRight: const Radius.circular(25.0),
-                bottomLeft: Radius.elliptical(width, 40.0),
-                bottomRight: Radius.elliptical(width, 40.0),
-              ),
+              borderRadius: BorderRadius.circular(25.0),
               image: DecorationImage(
                 image: NetworkImage(food.image ??
                     "https://assets.materialup.com/uploads/b03b23aa-aa69-4657-aa5e-fa5fef2c76e8/preview.png"),

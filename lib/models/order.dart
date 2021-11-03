@@ -33,8 +33,12 @@ class CartData {
   CartData({
     required this.item,
     required this.qty,
+    required this.name,
+    required this.price,
   });
 
   final String item;
+  final String name;
+  final int price;
   final String qty;
 }
