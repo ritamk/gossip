@@ -53,31 +53,34 @@ class _FoodListState extends State<FoodList> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
-        SliverToBoxAdapter(
-          child: _foodList != null
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: _foodList!.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    return index < _foodList!.length
-                        ? FoodListTile(food: _foodList![index])
-                        : _moreFood
-                            ? const Loading(
-                                white: false,
-                                rad: 14.0,
-                              )
-                            : const SizedBox(height: 0.0, width: 0.0);
-                  })
-              : const Loading(white: false),
-        ),
-      ],
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      controller: _scrollController,
+    return Scaffold(
+      appBar: AppBar(title: const Text("Menu")),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
+          SliverToBoxAdapter(
+            child: _foodList != null
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: _foodList!.length + 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      return index < _foodList!.length
+                          ? FoodListTile(food: _foodList![index])
+                          : _moreFood
+                              ? const Loading(
+                                  white: false,
+                                  rad: 14.0,
+                                )
+                              : const SizedBox(height: 0.0, width: 0.0);
+                    })
+                : const Loading(white: false),
+          ),
+        ],
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+        controller: _scrollController,
+      ),
     );
   }
 }

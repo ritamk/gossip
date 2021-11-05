@@ -32,31 +32,48 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        CupertinoSliverRefreshControl(
-          onRefresh: () async => _initCart(),
-        ),
-        SliverToBoxAdapter(
-          child: ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: _cartFood.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _cartFood.isNotEmpty
-                  ? CartTile(
-                      cartData: _cartFood[index],
-                      uid: widget.uid,
-                      index: index,
-                      reloadCart: _initCart(),
-                    )
-                  : const Loading(white: false);
-            },
+    return Scaffold(
+      appBar: AppBar(title: const Text("Cart")),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          CupertinoSliverRefreshControl(
+            onRefresh: () async => _initCart(),
           ),
+          SliverToBoxAdapter(
+            child: ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: _cartFood.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _cartFood.isNotEmpty
+                    ? CartTile(
+                        cartData: _cartFood[index],
+                        uid: widget.uid,
+                        index: index,
+                        reloadCart: _initCart(),
+                      )
+                    : const Loading(white: false);
+              },
+            ),
+          ),
+        ],
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 0.0,
+        onPressed: () {},
+        label: Row(
+          children: const <Widget>[
+            Icon(Icons.check),
+            SizedBox(width: 5.0, height: 0.0),
+            Text(
+              "Order",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-      ],
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      ),
     );
   }
 }
