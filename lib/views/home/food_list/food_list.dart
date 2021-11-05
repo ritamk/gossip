@@ -63,13 +63,11 @@ class _FoodListState extends State<FoodList> {
                   primary: false,
                   itemCount: _foodList!.length + 1,
                   itemBuilder: (BuildContext context, int index) {
-                    if (index < _foodList!.length) {
-                      return FoodListTile(food: _foodList![index]);
-                    } else {
-                      return _moreFood
-                          ? const Loading(color: Colors.black)
-                          : const SizedBox(height: 0.0, width: 0.0);
-                    }
+                    return index < _foodList!.length
+                        ? FoodListTile(food: _foodList![index])
+                        : _moreFood
+                            ? const Loading(color: Colors.black)
+                            : const SizedBox(height: 0.0, width: 0.0);
                   })
               : const Loading(color: Colors.black),
         ),

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 ThemeData mainTheme() {
   return ThemeData(
     fontFamily: "Montserrat",
-    dividerColor: Colors.transparent,
+    // dividerColor: Colors.transparent,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.white10,
       elevation: 0.0,

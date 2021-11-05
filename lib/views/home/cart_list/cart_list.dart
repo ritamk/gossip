@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gossip/models/food.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/services/database.dart';
-import 'package:gossip/services/providers.dart';
 import 'package:gossip/shared/loading.dart';
 import 'package:gossip/views/home/cart_list/cart_tile.dart';
 
@@ -19,7 +16,7 @@ class CartList extends StatefulWidget {
 class _CartListState extends State<CartList> {
   List<CartData> _cartFood = [];
 
-  Future<void> _initCart(String uid) async {
+  Future<void> _initCart() async {
     return await DatabaseService(uid: widget.uid)
         .cartList
         .then((value) => setState(() {
@@ -30,7 +27,7 @@ class _CartListState extends State<CartList> {
   @override
   void initState() {
     super.initState();
-    _initCart(widget.uid);
+    _initCart();
   }
 
   @override
@@ -38,7 +35,7 @@ class _CartListState extends State<CartList> {
     return CustomScrollView(
       slivers: <Widget>[
         CupertinoSliverRefreshControl(
-          onRefresh: () async => _initCart(widget.uid),
+          onRefresh: () async => _initCart(),
         ),
         SliverToBoxAdapter(
           child: ListView.builder(
@@ -47,7 +44,10 @@ class _CartListState extends State<CartList> {
             itemCount: _cartFood.length,
             itemBuilder: (BuildContext context, int index) {
               return _cartFood.isNotEmpty
-                  ? CartTile(cartData: _cartFood[index])
+                  ? CartTile(
+                      cartData: _cartFood[index],
+                      uid: widget.uid,
+                    )
                   : const Loading(color: Colors.black);
             },
           ),

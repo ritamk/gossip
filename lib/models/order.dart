@@ -35,10 +35,14 @@ class CartData {
     required this.qty,
     required this.name,
     required this.price,
+    this.discPrice,
+    this.image,
   });
 
   final String item;
   final String name;
   final int price;
   final String qty;
+  final int? discPrice;
+  final String? image;
 }

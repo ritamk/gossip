@@ -64,6 +64,8 @@ class DatabaseService {
           {
             "name": data.name,
             "price": data.price,
+            "discPrice": data.discPrice,
+            "image": data.image,
             "item": data.item,
             "qty": data.qty,
           }
@@ -113,6 +115,8 @@ class DatabaseService {
                 qty: e["qty"],
                 name: e["name"],
                 price: e["price"],
+                discPrice: e["discPrice"],
+                image: e["image"],
               ))
           .toList();
     } catch (e) {

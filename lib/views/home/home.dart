@@ -7,23 +7,24 @@ import 'package:gossip/views/home/bottom_nav.dart';
 import 'package:gossip/views/home/cart_list/cart_list.dart';
 import 'package:gossip/views/home/food_list/food_list.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final List<Widget> _pages = [
+      const FoodList(),
+      CartList(uid: watch(userModelStreamProvider).data!.value!.uid),
+    ];
+
+    final List<Text> _pageNames = [
+      const Text("Home"),
+      const Text("Cart"),
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: Consumer(builder: (context, ref, child) {
-          switch (ref(bottomNavSelectedProvider).state) {
-            case 0:
-              return const Text("Home");
-            case 1:
-              return const Text("Cart");
-            default:
-              return const Text("Home");
-          }
-        }),
+        title: _pageNames[watch(bottomNavSelectedProvider).state],
         actions: <Widget>[
           IconButton(
               onPressed: () {
@@ -32,19 +33,7 @@ class HomePage extends StatelessWidget {
               icon: const Icon(Icons.logout))
         ],
       ),
-      body: Consumer(builder: (context, ref, child) {
-        switch (ref(bottomNavSelectedProvider).state) {
-          case 0:
-            return const FoodList();
-          case 1:
-            return Consumer(builder: (context, ref, child) {
-              return CartList(
-                  uid: ref(userModelStreamProvider).data!.value!.uid);
-            });
-          default:
-            return const FoodList();
-        }
-      }),
+      body: _pages[watch(bottomNavSelectedProvider).state],
       bottomNavigationBar: const BottomNavBar(),
     );
   }

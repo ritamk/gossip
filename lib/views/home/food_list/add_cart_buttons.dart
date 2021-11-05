@@ -144,6 +144,8 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
           price: widget.food.price,
           item: widget.food.foodId,
           qty: _qty.toString(),
+          image: widget.food.image,
+          discPrice: widget.food.discPrice,
         ))
         .then((dynamic result) => setState(() {
               _addToCartLoading = false;
