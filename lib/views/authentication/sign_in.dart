@@ -109,7 +109,7 @@ class _SignInPageState extends State<SignInPage> {
                             widthFactor: 0.0,
                             heightFactor: 0.0,
                             child: Loading(
-                              color: Colors.white,
+                              white: true,
                             ),
                           )
                         : const Text(

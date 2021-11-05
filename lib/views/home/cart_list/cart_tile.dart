@@ -4,14 +4,22 @@ import 'package:gossip/models/order.dart';
 import 'package:gossip/views/home/cart_list/order_button.dart';
 
 class CartTile extends StatelessWidget {
-  const CartTile({Key? key, required this.cartData, required this.uid})
+  const CartTile(
+      {Key? key,
+      required this.cartData,
+      required this.uid,
+      required this.index,
+      required this.reloadCart})
       : super(key: key);
   final CartData cartData;
   final String uid;
+  final int index;
+  final Future<void> reloadCart;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       decoration: BoxDecoration(
@@ -76,7 +84,12 @@ class CartTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                CartTileOrderButton(cartData: cartData, uid: uid),
+                CartTileOrderButton(
+                  cartData: cartData,
+                  uid: uid,
+                  index: index,
+                  reloadCart: reloadCart,
+                ),
               ],
             ),
           ),

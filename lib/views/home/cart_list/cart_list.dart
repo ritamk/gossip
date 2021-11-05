@@ -47,8 +47,10 @@ class _CartListState extends State<CartList> {
                   ? CartTile(
                       cartData: _cartFood[index],
                       uid: widget.uid,
+                      index: index,
+                      reloadCart: _initCart(),
                     )
-                  : const Loading(color: Colors.black);
+                  : const Loading(white: false);
             },
           ),
         ),

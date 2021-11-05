@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Loading extends StatelessWidget {
-  const Loading({Key? key, required this.color}) : super(key: key);
-  final Color color;
+  const Loading({Key? key, required this.white}) : super(key: key);
+  final bool white;
 
   @override
   Widget build(BuildContext context) {
-    return (color == Colors.white)
+    return white
         ? Theme(
             data: ThemeData.dark(), child: const CupertinoActivityIndicator())
         : Theme(

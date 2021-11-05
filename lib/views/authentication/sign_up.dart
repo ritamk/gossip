@@ -113,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () async => await signUpLogic(context),
                     child: loading
                         ? const Loading(
-                            color: Colors.white,
+                            white: true,
                           )
                         : const Text(
                             "Sign-up",

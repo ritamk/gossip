@@ -88,6 +88,19 @@ class DatabaseService {
     }
   }
 
+  Future removeCartItem(int index) async {
+    try {
+      DocumentReference snapRef = _userCollection.doc(uid);
+      DocumentSnapshot snap = await snapRef.get();
+      List<dynamic> cartList = snap.get("cart");
+      cartList.removeAt(index);
+      return await snapRef.update({"cart": cartList});
+    } catch (e) {
+      print(e.toString());
+      return 1;
+    }
+  }
+
   int _cartCountFromSnapshot(DocumentSnapshot snapshot) {
     try {
       final List<dynamic> cartSnap = snapshot.get("cart");

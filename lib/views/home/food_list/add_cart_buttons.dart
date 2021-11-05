@@ -127,7 +127,7 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
                           ),
                         ],
                       )
-                    : const Loading(color: Colors.white),
+                    : const Loading(white: true),
               ),
             );
           });
