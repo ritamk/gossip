@@ -18,6 +18,8 @@ class CartTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _width = MediaQuery.of(context).size.width;
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -27,7 +29,7 @@ class CartTile extends StatelessWidget {
         color: Colors.white,
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(
@@ -94,36 +96,26 @@ class CartTile extends StatelessWidget {
             ),
           ),
           // Image
-          Container(
-            constraints: BoxConstraints.tight(const Size.square(80.0)),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.0),
-              image: DecorationImage(
-                image: NetworkImage(cartData.image ??
-                    "https://assets.materialup.com/uploads/b03b23aa-aa69-4657-aa5e-fa5fef2c76e8/preview.png"),
-                fit: BoxFit.cover,
-                onError: (object, stacktrace) =>
-                    SizedBox.expand(child: Container(color: Colors.black87)),
+          Wrap(
+            children: <Widget>[
+              Container(
+                width: _width / 3.5,
+                padding: const EdgeInsets.all(50.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  image: DecorationImage(
+                    image: NetworkImage(cartData.image ??
+                        "https://assets.materialup.com/uploads/b03b23aa-aa69-4657-aa5e-fa5fef2c76e8/preview.png"),
+                    fit: BoxFit.cover,
+                    onError: (object, stacktrace) => SizedBox.expand(
+                        child: Container(color: Colors.black87)),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
 }
-
-// Image
-//               Container(
-//                 constraints: BoxConstraints.tight(const Size.square(80.0)),
-//                 decoration: BoxDecoration(
-//                   borderRadius: BorderRadius.circular(25.0),
-//                   image: DecorationImage(
-//                     image: NetworkImage(cartData.image ??
-//                         "https://assets.materialup.com/uploads/b03b23aa-aa69-4657-aa5e-fa5fef2c76e8/preview.png"),
-//                     fit: BoxFit.cover,
-//                     onError: (object, stacktrace) => SizedBox.expand(
-//                         child: Container(color: Colors.black87)),
-//                   ),
-//                 ),
-//               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/services/database.dart';
+import 'package:gossip/shared/loading.dart';
 
 class CartTileOrderButton extends StatefulWidget {
   const CartTileOrderButton(
@@ -36,8 +37,8 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
       children: <Widget>[
         IconButton(
             onPressed: () async => removeCartItem(),
-            icon: Icon(Icons.delete,
-                color: Colors.redAccent.shade200, size: 20.0)),
+            icon: Icon(Icons.delete_outline_rounded,
+                color: Colors.redAccent.shade200, size: 22.0)),
         const Divider(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,13 +59,19 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
             ),
           ],
         ),
+        IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.check_circle_outline_rounded,
+                size: 22.0, color: Colors.teal.shade600)),
       ],
     );
   }
 
-  void removeCartItem() => DatabaseService(uid: widget.uid)
-      .removeCartItem(widget.index)
-      .whenComplete(() => widget.reloadCart);
+  void removeCartItem() {
+    DatabaseService(uid: widget.uid)
+        .removeCartItem(widget.index)
+        .whenComplete(() => widget.reloadCart);
+  }
 
   void increaseQty() {
     if (_qty < 25) {
