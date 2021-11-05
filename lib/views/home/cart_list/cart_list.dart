@@ -17,17 +17,20 @@ class _CartListState extends State<CartList> {
   List<CartData> _cartFood = [];
 
   Future<void> _initCart() async {
-    return await DatabaseService(uid: widget.uid)
+    return DatabaseService(uid: widget.uid)
         .cartList
-        .then((value) => setState(() {
-              _cartFood = value;
-            }));
+        .then((value) => setState(() => _cartFood = value));
   }
 
   @override
   void initState() {
     super.initState();
     _initCart();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
