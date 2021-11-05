@@ -66,7 +66,10 @@ class _FoodListState extends State<FoodList> {
                     return index < _foodList!.length
                         ? FoodListTile(food: _foodList![index])
                         : _moreFood
-                            ? const Loading(white: false)
+                            ? const Loading(
+                                white: false,
+                                rad: 14.0,
+                              )
                             : const SizedBox(height: 0.0, width: 0.0);
                   })
               : const Loading(white: false),

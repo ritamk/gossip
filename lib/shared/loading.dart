@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Loading extends StatelessWidget {
-  const Loading({Key? key, required this.white}) : super(key: key);
+  const Loading({Key? key, required this.white, this.rad}) : super(key: key);
   final bool white;
+  final double? rad;
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,6 @@ class Loading extends StatelessWidget {
             data: ThemeData.dark(), child: const CupertinoActivityIndicator())
         : Theme(
             data: ThemeData.fallback(),
-            child: const CupertinoActivityIndicator());
+            child: CupertinoActivityIndicator(radius: rad ?? 10.0));
   }
 }
