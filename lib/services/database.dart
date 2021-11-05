@@ -57,6 +57,26 @@ class DatabaseService {
     }
   }
 
+  ExtendedUserData? _extendedUserDataFromSnapshot(DocumentSnapshot snapshot) {
+    try {
+      return ExtendedUserData(
+        uid: uid!,
+        name: snapshot["name"],
+        email: snapshot["email"],
+        phone: snapshot["phone"],
+        address: snapshot["address"],
+      );
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<ExtendedUserData?> get extendedUserData {
+    return _userCollection.doc(uid).snapshots().map(
+        (DocumentSnapshot snapshot) => _extendedUserDataFromSnapshot(snapshot));
+  }
+
   Future updateCartData(CartData data) async {
     try {
       return await _userCollection.doc(uid).update({
@@ -70,17 +90,6 @@ class DatabaseService {
             "qty": data.qty,
           }
         ])
-      });
-    } catch (e) {
-      print(e.toString());
-      return 1;
-    }
-  }
-
-  Future removeCartData() async {
-    try {
-      return await _userCollection.doc(uid).update({
-        "cart": FieldValue.arrayRemove([]),
       });
     } catch (e) {
       print(e.toString());
@@ -138,39 +147,19 @@ class DatabaseService {
     }
   }
 
-  ExtendedUserData? _extendedUserDataFromSnapshot(DocumentSnapshot snapshot) {
+  Future updateUserOrders(OrderData data) async {
     try {
-      return ExtendedUserData(
-        uid: uid!,
-        name: snapshot["name"],
-        email: snapshot["email"],
-        phone: snapshot["phone"],
-        address: snapshot["address"],
-      );
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
-  Stream<ExtendedUserData?> get extendedUserData {
-    return _userCollection.doc(uid).snapshots().map(
-        (DocumentSnapshot snapshot) => _extendedUserDataFromSnapshot(snapshot));
-  }
-
-  Future addFoodItem(Food data) async {
-    try {
-      return await _menuCollection.add({
-        "name": data.name,
-        "about": data.about,
-        "type": data.type,
-        "price": data.price,
-        "veg": data.veg,
-        "discPrice": data.discPrice,
-        "discPer": data.discPer,
-        "rating": data.rating,
-        "image": data.image,
-      }).then((value) => value.update({"fid": value.id}));
+      return await _userCollection.doc(uid).update({
+        "order": FieldValue.arrayUnion([
+          {
+            "name": data.name,
+            "price": data.price,
+            "item": data.item,
+            "qty": data.qty,
+            "time": Timestamp.now(),
+          }
+        ])
+      });
     } catch (e) {
       print(e.toString());
       return 1;

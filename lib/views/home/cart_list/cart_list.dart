@@ -55,7 +55,7 @@ class _CartListState extends State<CartList> {
                         index: index,
                         reloadCart: _initCart(),
                       )
-                    : const Loading(white: false);
+                    : const Loading(white: false, rad: 14);
               },
             ),
           ),
@@ -63,20 +63,24 @@ class _CartListState extends State<CartList> {
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 0.0,
-        onPressed: () {},
-        label: Row(
-          children: const <Widget>[
-            Icon(Icons.check),
-            SizedBox(width: 5.0, height: 0.0),
-            Text(
-              "Order",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: _cartFood.isNotEmpty
+          ? FloatingActionButton.extended(
+              splashColor: Colors.purple,
+              highlightElevation: 0.0,
+              elevation: 0.0,
+              onPressed: () {},
+              label: Row(
+                children: const <Widget>[
+                  Icon(Icons.check),
+                  SizedBox(width: 5.0, height: 0.0),
+                  Text(
+                    "Order",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            )
+          : const SizedBox(height: 0.0, width: 0.0),
     );
   }
 }

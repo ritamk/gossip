@@ -22,6 +22,8 @@ class CartTileOrderButton extends StatefulWidget {
 
 class _CartTileOrderButtonState extends State<CartTileOrderButton> {
   late int _qty;
+  bool _delete = false;
+  bool _ordered = false;
 
   @override
   void initState() {
@@ -46,8 +48,10 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
           children: <Widget>[
             IconButton(
                 onPressed: () => reduceQty(),
-                icon: const Icon(Icons.remove,
-                    color: Colors.black54, size: 18.0)),
+                icon: _delete
+                    ? const Loading(white: false)
+                    : const Icon(Icons.remove,
+                        color: Colors.black54, size: 18.0)),
             Text(_qty.toString(),
                 style: const TextStyle(
                     color: Colors.black87,
@@ -60,17 +64,39 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
           ],
         ),
         IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.check_circle_outline_rounded,
-                size: 22.0, color: Colors.teal.shade600)),
+            onPressed: () => orderItem(),
+            icon: _ordered
+                ? const Loading(white: false)
+                : Icon(Icons.check_circle_outline_rounded,
+                    size: 22.0, color: Colors.teal.shade600)),
       ],
     );
   }
 
-  void removeCartItem() {
-    DatabaseService(uid: widget.uid)
+  Future<void> removeCartItem() async {
+    setState(() => _delete = true);
+    await DatabaseService(uid: widget.uid)
         .removeCartItem(widget.index)
-        .whenComplete(() => widget.reloadCart);
+        .whenComplete(() {
+      widget.reloadCart;
+      _delete = false;
+    });
+  }
+
+  Future<void> orderItem() async {
+    setState(() => _ordered = true);
+    await DatabaseService(uid: widget.uid).updateUserOrders(OrderData(
+      name: widget.cartData.name,
+      item: widget.cartData.item,
+      qty: _qty,
+      price: widget.cartData.discPrice ?? widget.cartData.price,
+    ));
+    await DatabaseService(uid: widget.uid)
+        .removeCartItem(widget.index)
+        .whenComplete(() {
+      widget.reloadCart;
+      _ordered = false;
+    });
   }
 
   void increaseQty() {

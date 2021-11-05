@@ -59,7 +59,7 @@ class _FoodListState extends State<FoodList> {
         slivers: <Widget>[
           CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
           SliverToBoxAdapter(
-            child: _foodList != null
+            child: _foodList?.isNotEmpty ?? false
                 ? ListView.builder(
                     shrinkWrap: true,
                     primary: false,
@@ -68,13 +68,10 @@ class _FoodListState extends State<FoodList> {
                       return index < _foodList!.length
                           ? FoodListTile(food: _foodList![index])
                           : _moreFood
-                              ? const Loading(
-                                  white: false,
-                                  rad: 14.0,
-                                )
+                              ? const Loading(white: false)
                               : const SizedBox(height: 0.0, width: 0.0);
                     })
-                : const Loading(white: false),
+                : const Loading(white: false, rad: 14.0),
           ),
         ],
         physics: const BouncingScrollPhysics(
