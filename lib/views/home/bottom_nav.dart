@@ -4,7 +4,8 @@ import 'package:gossip/services/database.dart';
 import 'package:gossip/services/providers.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  const BottomNavBar({Key? key, required this.uid}) : super(key: key);
+  final String uid;
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -30,9 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               label: "Home"),
           BottomNavigationBarItem(
               icon: StreamBuilder<int>(
-                  stream: DatabaseService(
-                          uid: ref(userModelStreamProvider).data?.value?.uid)
-                      .cartCount,
+                  stream: DatabaseService(uid: widget.uid).cartCount,
                   builder: (context, snapshot) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -68,6 +67,44 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 size: 38.0,
               ),
               label: "Cart"),
+          BottomNavigationBarItem(
+              icon: StreamBuilder<int>(
+                  stream: DatabaseService(uid: widget.uid).orderCount,
+                  builder: (context, snapshot) {
+                    return Stack(
+                      alignment: Alignment.topRight,
+                      children: <Widget>[
+                        const Icon(Icons.shopping_bag_outlined, size: 30.0),
+                        snapshot.hasData
+                            ? snapshot.data != 0
+                                ? Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(1.0),
+                                        shape: BoxShape.circle),
+                                    constraints: const BoxConstraints(
+                                        maxHeight: 18.0,
+                                        maxWidth: 18.0,
+                                        minHeight: 18.0,
+                                        minWidth: 18.0),
+                                    child: Text(
+                                      snapshot.data!.toString(),
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      softWrap: true,
+                                    ),
+                                  )
+                                : const SizedBox(height: 0.0, width: 0.0)
+                            : const SizedBox(height: 0.0, width: 0.0),
+                      ],
+                    );
+                  }),
+              activeIcon: const Icon(
+                Icons.shopping_bag_rounded,
+                size: 38.0,
+              ),
+              label: "Orders"),
         ],
       );
     });

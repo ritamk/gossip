@@ -127,23 +127,27 @@ class DatabaseService {
         .map((DocumentSnapshot snapshot) => _cartCountFromSnapshot(snapshot));
   }
 
-  Future<List<CartData>> get cartList async {
+  CartData _cartListFromSnapshot(dynamic snapshot) {
+    return CartData(
+      item: snapshot["item"],
+      qty: snapshot["qty"],
+      name: snapshot["name"],
+      price: snapshot["price"],
+      discPrice: snapshot["discPrice"],
+      image: snapshot["image"],
+    );
+  }
+
+  Future<List<CartData>?> get cartList async {
     try {
       DocumentSnapshot snap = await _userCollection.doc(uid).get();
-      List<dynamic> cartIn = snap.get("cart");
-      return cartIn
-          .map((e) => CartData(
-                item: e["item"],
-                qty: e["qty"],
-                name: e["name"],
-                price: e["price"],
-                discPrice: e["discPrice"],
-                image: e["image"],
-              ))
+      List<dynamic> list = snap.get("cart");
+      return list
+          .map((dynamic snapshot) => _cartListFromSnapshot(snapshot))
           .toList();
     } catch (e) {
       print(e.toString());
-      return [];
+      return null;
     }
   }
 
@@ -163,6 +167,49 @@ class DatabaseService {
     } catch (e) {
       print(e.toString());
       return 1;
+    }
+  }
+
+  int _orderCountFromSnapshot(DocumentSnapshot snapshot) {
+    try {
+      final List<dynamic> orderSnap = snapshot.get("order");
+      return orderSnap.length;
+    } catch (e) {
+      print(e.toString());
+      return 0;
+    }
+  }
+
+  Stream<int> get orderCount {
+    try {
+      return _userCollection.doc(uid).snapshots().map(
+          (DocumentSnapshot snapshot) => _orderCountFromSnapshot(snapshot));
+    } catch (e) {
+      print(e.toString());
+      return Stream.value(0);
+    }
+  }
+
+  OrderData _orderDataFromSnapshot(dynamic snapshot) {
+    return OrderData(
+      name: snapshot["name"],
+      item: snapshot["item"],
+      qty: snapshot["qty"],
+      price: snapshot["price"],
+      time: snapshot["time"],
+    );
+  }
+
+  Future<List<OrderData>?> get userOrders async {
+    try {
+      DocumentSnapshot snap = await _userCollection.doc(uid).get();
+      List<dynamic> list = snap.get("order");
+      return list
+          .map((dynamic snapshot) => _orderDataFromSnapshot(snapshot))
+          .toList();
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
   }
 

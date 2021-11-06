@@ -14,7 +14,7 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  List<CartData> _cartFood = [];
+  List<CartData>? _cartFood = [];
 
   Future<void> _initCart() async {
     return DatabaseService(uid: widget.uid)
@@ -43,43 +43,47 @@ class _CartListState extends State<CartList> {
             onRefresh: () async => _initCart(),
           ),
           SliverToBoxAdapter(
-            child: ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: _cartFood.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _cartFood.isNotEmpty
-                    ? CartTile(
-                        cartData: _cartFood[index],
-                        uid: widget.uid,
-                        index: index,
-                        reloadCart: _initCart(),
-                      )
-                    : const Loading(white: false, rad: 14);
-              },
-            ),
+            child: _cartFood != null
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: _cartFood!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _cartFood!.isNotEmpty
+                          ? CartTile(
+                              cartData: _cartFood![index],
+                              uid: widget.uid,
+                              index: index,
+                              reloadCart: _initCart(),
+                            )
+                          : const Loading(white: false, rad: 14);
+                    },
+                  )
+                : const Loading(white: false, rad: 14),
           ),
         ],
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
       ),
-      floatingActionButton: _cartFood.isNotEmpty
-          ? FloatingActionButton.extended(
-              splashColor: Colors.purple,
-              highlightElevation: 0.0,
-              elevation: 0.0,
-              onPressed: () {},
-              label: Row(
-                children: const <Widget>[
-                  Icon(Icons.check),
-                  SizedBox(width: 5.0, height: 0.0),
-                  Text(
-                    "Order",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+      floatingActionButton: _cartFood != null
+          ? _cartFood!.isNotEmpty
+              ? FloatingActionButton.extended(
+                  splashColor: Colors.purple,
+                  highlightElevation: 0.0,
+                  elevation: 0.0,
+                  onPressed: () {},
+                  label: Row(
+                    children: const <Widget>[
+                      Icon(Icons.check),
+                      SizedBox(width: 5.0, height: 0.0),
+                      Text(
+                        "Order",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )
+                )
+              : const SizedBox(height: 0.0, width: 0.0)
           : const SizedBox(height: 0.0, width: 0.0),
     );
   }
