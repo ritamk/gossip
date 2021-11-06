@@ -161,6 +161,7 @@ class DatabaseService {
             "item": data.item,
             "qty": data.qty,
             "time": Timestamp.now(),
+            "delivery": data.delivery,
           }
         ])
       });
@@ -192,12 +193,12 @@ class DatabaseService {
 
   OrderData _orderDataFromSnapshot(dynamic snapshot) {
     return OrderData(
-      name: snapshot["name"],
-      item: snapshot["item"],
-      qty: snapshot["qty"],
-      price: snapshot["price"],
-      time: snapshot["time"],
-    );
+        name: snapshot["name"],
+        item: snapshot["item"],
+        qty: snapshot["qty"],
+        price: snapshot["price"],
+        time: snapshot["time"],
+        delivery: snapshot["delivery"]);
   }
 
   Future<List<OrderData>?> get userOrders async {

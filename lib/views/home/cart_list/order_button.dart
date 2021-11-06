@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/services/database.dart';
-import 'package:gossip/shared/loading.dart';
+import 'package:gossip/views/home/cart_list/delivery_dialog.dart';
 
 class CartTileOrderButton extends StatefulWidget {
   const CartTileOrderButton(
@@ -22,8 +23,6 @@ class CartTileOrderButton extends StatefulWidget {
 
 class _CartTileOrderButtonState extends State<CartTileOrderButton> {
   late int _qty;
-  bool _delete = false;
-  bool _ordered = false;
 
   @override
   void initState() {
@@ -48,10 +47,8 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
           children: <Widget>[
             IconButton(
                 onPressed: () => reduceQty(),
-                icon: _delete
-                    ? const Loading(white: false)
-                    : const Icon(Icons.remove,
-                        color: Colors.black54, size: 18.0)),
+                icon: const Icon(Icons.remove,
+                    color: Colors.black54, size: 18.0)),
             Text(_qty.toString(),
                 style: const TextStyle(
                     color: Colors.black87,
@@ -64,27 +61,18 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
           ],
         ),
         IconButton(
-            onPressed: () => orderItem(),
-            icon: _ordered
-                ? const Loading(white: false)
-                : Icon(Icons.check_circle_outline_rounded,
-                    size: 22.0, color: Colors.teal.shade600)),
+            onPressed: () => openDeliveryDialog(),
+            icon: Icon(Icons.check_circle_outline_rounded,
+                size: 22.0, color: Colors.teal.shade600)),
       ],
     );
   }
 
-  Future<void> removeCartItem() async {
-    setState(() => _delete = true);
-    await DatabaseService(uid: widget.uid)
-        .removeCartItem(widget.index)
-        .whenComplete(() {
-      widget.reloadCart;
-      _delete = false;
-    });
-  }
+  Future<void> removeCartItem() async => await DatabaseService(uid: widget.uid)
+      .removeCartItem(widget.index)
+      .whenComplete(() => widget.reloadCart);
 
   Future<void> orderItem() async {
-    setState(() => _ordered = true);
     await DatabaseService(uid: widget.uid).updateUserOrders(OrderData(
       name: widget.cartData.name,
       item: widget.cartData.item,
@@ -93,10 +81,19 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
     ));
     await DatabaseService(uid: widget.uid)
         .removeCartItem(widget.index)
-        .whenComplete(() {
-      widget.reloadCart;
-      _ordered = false;
-    });
+        .whenComplete(() => widget.reloadCart);
+  }
+
+  openDeliveryDialog() {
+    Navigator.of(context).push(CupertinoDialogRoute(
+        builder: (builder) => ConfirmOrderDialog(
+              cartData: widget.cartData,
+              uid: widget.uid,
+              qty: _qty,
+              index: widget.index,
+              reloadCart: widget.reloadCart,
+            ),
+        context: context));
   }
 
   void increaseQty() {

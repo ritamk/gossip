@@ -7,6 +7,7 @@ class OrderData {
     required this.qty,
     required this.price,
     this.time,
+    this.delivery,
   });
 
   final String name;
@@ -14,6 +15,7 @@ class OrderData {
   final int qty;
   final int price;
   final Timestamp? time;
+  final bool? delivery;
 }
 
 class CartData {

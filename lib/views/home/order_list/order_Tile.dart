@@ -23,17 +23,21 @@ class OrderTile extends StatelessWidget {
       child: ListTile(
         title: Text(orderData.name,
             style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: RichText(
-          text: TextSpan(
-            style: const TextStyle(color: Colors.black54, fontSize: 18.0),
-            children: <InlineSpan>[
-              const TextSpan(text: "₹ ", style: TextStyle(fontSize: 15.0)),
-              TextSpan(text: orderData.price.toString()),
-              const TextSpan(
-                  text: "\t\t\t●\t\t\t", style: TextStyle(fontSize: 15.0)),
-              TextSpan(text: orderData.qty.toString()),
-            ],
-          ),
+        subtitle: Row(
+          children: <Widget>[
+            const Text("₹ ",
+                style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+            Text(orderData.price.toString(),
+                style: const TextStyle(fontSize: 16.0, color: Colors.black87)),
+            const Text("\t\t●\t\t",
+                style: TextStyle(fontSize: 10.0, color: Colors.black87)),
+            Text(orderData.qty.toString(),
+                style: const TextStyle(fontSize: 16.0, color: Colors.black87)),
+            const Text("\t\t●\t\t",
+                style: TextStyle(fontSize: 10.0, color: Colors.black87)),
+            Text(orderData.delivery! ? "At Home" : "At Gossip",
+                style: const TextStyle(fontSize: 16.0, color: Colors.black87)),
+          ],
         ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.start,
