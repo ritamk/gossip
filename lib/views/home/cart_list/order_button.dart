@@ -33,37 +33,44 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         IconButton(
-            onPressed: () async => removeCartItem(),
-            icon: Icon(Icons.delete_outline_rounded,
-                color: Colors.redAccent.shade200, size: 22.0)),
-        const Divider(),
+          onPressed: () async => removeCartItem(),
+          icon: Icon(Icons.delete_outline_rounded,
+              color: Colors.redAccent.shade200, size: 22.0),
+          tooltip: "Remove Item",
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             IconButton(
-                onPressed: () => reduceQty(),
-                icon: const Icon(Icons.remove,
-                    color: Colors.black54, size: 18.0)),
-            Text(_qty.toString(),
-                style: const TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.0)),
+              onPressed: () => reduceQty(),
+              icon: const Icon(Icons.remove, color: Colors.black54, size: 18.0),
+              tooltip: "Reduce quantity",
+            ),
+            Text(
+              _qty.toString(),
+              style: const TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.0),
+            ),
             IconButton(
               onPressed: () => increaseQty(),
               icon: const Icon(Icons.add, color: Colors.black54, size: 18.0),
+              tooltip: "Increase quantity",
             ),
           ],
         ),
         IconButton(
-            onPressed: () => openDeliveryDialog(),
-            icon: Icon(Icons.check_circle_outline_rounded,
-                size: 22.0, color: Colors.teal.shade600)),
+          onPressed: () => openDeliveryDialog(),
+          icon: Icon(Icons.check_circle_outline_rounded,
+              size: 22.0, color: Colors.teal.shade600),
+          tooltip: "Make Order",
+        ),
       ],
     );
   }
@@ -71,18 +78,6 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
   Future<void> removeCartItem() async => await DatabaseService(uid: widget.uid)
       .removeCartItem(widget.index)
       .whenComplete(() => widget.reloadCart);
-
-  Future<void> orderItem() async {
-    await DatabaseService(uid: widget.uid).updateUserOrders(OrderData(
-      name: widget.cartData.name,
-      item: widget.cartData.item,
-      qty: _qty,
-      price: widget.cartData.discPrice ?? widget.cartData.price,
-    ));
-    await DatabaseService(uid: widget.uid)
-        .removeCartItem(widget.index)
-        .whenComplete(() => widget.reloadCart);
-  }
 
   openDeliveryDialog() {
     Navigator.of(context).push(CupertinoDialogRoute(
