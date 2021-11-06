@@ -42,7 +42,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                 ? Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(1.0),
+                                        color: Colors.red.withOpacity(0.9),
                                         shape: BoxShape.circle),
                                     constraints: const BoxConstraints(
                                         maxHeight: 18.0,
@@ -80,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                 ? Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(1.0),
+                                        color: Colors.red.withOpacity(0.9),
                                         shape: BoxShape.circle),
                                     constraints: const BoxConstraints(
                                         maxHeight: 18.0,
