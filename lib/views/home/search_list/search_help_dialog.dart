@@ -8,9 +8,9 @@ class OrderHelpDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CupertinoAlertDialog(
       title: Text("Search usage:"),
-      content: Text("Tap on the search text-field,\n"
-          "enter the item you are searching for,\n"
-          "if the item exists, it'll be displayed\n"
+      content: Text("Tap on the search text-field, "
+          "enter the item you are searching for, "
+          "if the item exists, it'll be displayed "
           "otherwise the loading animation will keep playing."),
     );
   }
