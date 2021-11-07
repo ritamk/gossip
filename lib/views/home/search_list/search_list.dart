@@ -72,7 +72,7 @@ class _SearchListState extends State<SearchList> {
         actions: <Widget>[
           IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.info_outline),
+              icon: const Icon(Icons.help_rounded),
               tooltip: "Info"),
           const SizedBox(width: 16.0, height: 0.0),
         ],
