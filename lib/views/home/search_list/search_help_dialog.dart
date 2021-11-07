@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class OrderHelpDialog extends StatelessWidget {
-  const OrderHelpDialog({Key? key}) : super(key: key);
+class SearchHelpDialog extends StatelessWidget {
+  const SearchHelpDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

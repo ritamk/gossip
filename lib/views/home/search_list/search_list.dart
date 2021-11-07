@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gossip/models/food.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/buttons.dart';
 import 'package:gossip/shared/loading.dart';
 import 'package:gossip/views/home/food_list/food_tile.dart';
+import 'package:gossip/views/home/search_list/search_help_dialog.dart';
 
 class SearchList extends StatefulWidget {
   const SearchList({Key? key}) : super(key: key);
@@ -71,7 +73,9 @@ class _SearchListState extends State<SearchList> {
         ),
         actions: <Widget>[
           IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(CupertinoDialogRoute(
+                  builder: (builder) => const SearchHelpDialog(),
+                  context: context)),
               icon: const Icon(Icons.help_rounded),
               tooltip: "Info"),
           const SizedBox(width: 16.0, height: 0.0),
