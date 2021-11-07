@@ -3,44 +3,34 @@ import 'package:gossip/models/user.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/buttons.dart';
 import 'package:gossip/shared/loading.dart';
+import 'package:gossip/views/home/profile/profile_fab.dart';
 
-class Profile extends StatefulWidget {
+class Profile extends StatelessWidget {
   const Profile({Key? key, required this.uid}) : super(key: key);
   final String uid;
 
   @override
-  _ProfileState createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FocusNode _nameFocus = FocusNode();
-  final FocusNode _phoneFocus = FocusNode();
-  final FocusNode _adLineFocus = FocusNode();
-  final FocusNode _pinFocus = FocusNode();
-  final FocusNode _cityFocus = FocusNode();
-  final FocusNode _stateFocus = FocusNode();
-  String _name = "";
-  String _phone = "";
-  String _adLine = "";
-  String _pin = "";
-  String _city = "";
-  String _state = "";
-  bool _loading = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final FocusNode _nameFocus = FocusNode();
+    final FocusNode _phoneFocus = FocusNode();
+    final FocusNode _adLineFocus = FocusNode();
+    final FocusNode _pinFocus = FocusNode();
+    final FocusNode _cityFocus = FocusNode();
+    final FocusNode _stateFocus = FocusNode();
+    String _name = "";
+    String _phone = "";
+    String _adLine = "";
+    String _pin = "";
+    String _city = "";
+    String _state = "";
+
     return Scaffold(
       appBar: AppBar(title: const Text("Profile")),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: StreamBuilder<ExtendedUserData?>(
-          stream: DatabaseService(uid: widget.uid).extendedUserData,
+          stream: DatabaseService(uid: uid).extendedUserData,
           initialData: null,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
@@ -166,46 +156,18 @@ class _ProfileState extends State<Profile> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        splashColor: Colors.purple,
-        highlightElevation: 0.0,
-        elevation: 0.0,
-        label: _loading
-            ? const Loading(white: true)
-            : Row(
-                children: const <Widget>[
-                  Icon(Icons.check),
-                  SizedBox(width: 5.0, height: 0.0),
-                  Text("Save", style: TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            setState(() {
-              _loading = true;
-            });
-            dynamic result = await DatabaseService(uid: widget.uid)
-                .updateUserData(ExtendedUserData(
-                    uid: widget.uid,
-                    name: _name,
-                    phone: _phone,
-                    adLine: _adLine,
-                    city: _city,
-                    state: _state,
-                    pin: _pin));
-            setState(() {
-              _loading = false;
-              result != 1
-                  ? ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Profile updated!"),
-                    ))
-                  : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          "Something went wrong, couldn't update profile."),
-                    ));
-            });
-          }
-        },
+      floatingActionButton: ProfileFAB(
+        uid: uid,
+        formKey: _formKey,
+        data: ExtendedUserData(
+          uid: uid,
+          name: _name,
+          phone: _phone,
+          adLine: _adLine,
+          city: _city,
+          state: _state,
+          pin: _pin,
+        ),
       ),
     );
   }
