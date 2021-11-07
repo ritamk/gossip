@@ -34,6 +34,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 size: 38.0,
               ),
               label: "Home"),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.search_outlined, size: 30.0),
+              activeIcon: Icon(
+                Icons.search,
+                size: 38.0,
+              ),
+              label: "Search"),
           BottomNavigationBarItem(
               icon: StreamBuilder<int>(
                   stream: DatabaseService(uid: widget.uid).cartCount,

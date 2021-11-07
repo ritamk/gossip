@@ -7,6 +7,7 @@ import 'package:gossip/views/home/cart_list/cart_list.dart';
 import 'package:gossip/views/home/food_list/food_list.dart';
 import 'package:gossip/views/home/order_list/order_list.dart';
 import 'package:gossip/views/home/profile/profile.dart';
+import 'package:gossip/views/home/search_list.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class HomePage extends ConsumerWidget {
 
     final List<Widget> _pages = [
       const FoodList(),
+      const SearchList(),
       CartList(uid: userID),
       OrderList(uid: userID),
       Profile(uid: userID),

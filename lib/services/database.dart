@@ -221,6 +221,18 @@ class DatabaseService {
     }
   }
 
+  Future<List<Food>?> get searchFoodList async {
+    try {
+      QuerySnapshot snapshot = await _menuCollection.get();
+      List<QueryDocumentSnapshot> snapDocs = snapshot.docs;
+      return await compute<List<QueryDocumentSnapshot>, List<Food>>(
+          isolateFoodGetter, snapDocs);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   static DocumentSnapshot? lastDocument;
   static const int numDocsToLoad = 10;
 
