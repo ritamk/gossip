@@ -20,12 +20,13 @@ class _ProfileState extends State<Profile> {
   final FocusNode _pinFocus = FocusNode();
   final FocusNode _cityFocus = FocusNode();
   final FocusNode _stateFocus = FocusNode();
-  String? _name;
-  String? _phone;
-  String? _adLine;
-  String? _pin;
-  String? _city;
-  String? _state;
+  String _name = "";
+  String _phone = "";
+  String _adLine = "";
+  String _pin = "";
+  String _city = "";
+  String _state = "";
+  bool _loading = false;
 
   @override
   void dispose() {
@@ -148,6 +149,8 @@ class _ProfileState extends State<Profile> {
                                 ? null
                                 : "Please enter a valid pin number"),
                         textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (val) =>
+                            FocusScope.of(context).unfocus(),
                       ),
                     ],
                   ),
@@ -162,6 +165,47 @@ class _ProfileState extends State<Profile> {
             }
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        splashColor: Colors.purple,
+        highlightElevation: 0.0,
+        elevation: 0.0,
+        label: _loading
+            ? const Loading(white: true)
+            : Row(
+                children: const <Widget>[
+                  Icon(Icons.check),
+                  SizedBox(width: 5.0, height: 0.0),
+                  Text("Save", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            setState(() {
+              _loading = true;
+            });
+            dynamic result = await DatabaseService(uid: widget.uid)
+                .updateUserData(ExtendedUserData(
+                    uid: widget.uid,
+                    name: _name,
+                    phone: _phone,
+                    adLine: _adLine,
+                    city: _city,
+                    state: _state,
+                    pin: _pin));
+            setState(() {
+              _loading = false;
+              result != 1
+                  ? ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Profile updated!"),
+                    ))
+                  : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                          "Something went wrong, couldn't update profile."),
+                    ));
+            });
+          }
+        },
       ),
     );
   }
