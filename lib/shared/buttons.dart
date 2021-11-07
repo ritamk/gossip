@@ -34,3 +34,13 @@ OutlineInputBorder textFieldBorder() {
     borderRadius: BorderRadius.circular(30.0),
   );
 }
+
+InputDecoration profileInputDecoration() {
+  return InputDecoration(
+    contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+    filled: true,
+    fillColor: Colors.white,
+    border: OutlineInputBorder(
+        borderSide: BorderSide.none, borderRadius: BorderRadius.circular(15.0)),
+  );
+}

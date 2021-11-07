@@ -110,7 +110,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 size: 38.0,
               ),
               label: "Orders"),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_rounded, size: 30.0),
+              activeIcon: Icon(
+                Icons.person_rounded,
+                size: 38.0,
+              ),
+              label: "Home"),
         ],
+        type: BottomNavigationBarType.fixed,
       );
     });
   }

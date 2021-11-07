@@ -11,8 +11,7 @@ class ExtendedUserData {
     this.email,
     this.phone,
     this.address,
-    this.adLine1,
-    this.adLine2,
+    this.adLine,
     this.city,
     this.state,
     this.pin,
@@ -23,8 +22,7 @@ class ExtendedUserData {
   final String? email;
   final String? phone;
   final Map<String, dynamic>? address;
-  final String? adLine1;
-  final String? adLine2;
+  final String? adLine;
   final String? city;
   final String? state;
   final String? pin;

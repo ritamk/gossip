@@ -22,8 +22,7 @@ class DatabaseService {
         "phone": data.phone,
         "email": data.email,
         "address": {
-          "adLine1": data.adLine1,
-          "adLine2": data.adLine2,
+          "adLine": data.adLine,
           "city": data.city,
           "pin": data.pin,
           "state": data.state,
@@ -44,8 +43,7 @@ class DatabaseService {
         "name": data.name,
         "phone": data.phone,
         "address": {
-          "adLine1": data.adLine1,
-          "adLine2": data.adLine2,
+          "adLine": data.adLine,
           "city": data.city,
           "pin": data.pin,
           "state": data.state,
@@ -73,8 +71,17 @@ class DatabaseService {
   }
 
   Stream<ExtendedUserData?> get extendedUserData {
-    return _userCollection.doc(uid).snapshots().map(
-        (DocumentSnapshot snapshot) => _extendedUserDataFromSnapshot(snapshot));
+    try {
+      return _userCollection.doc(uid).snapshots().map(
+          (DocumentSnapshot snapshot) =>
+              _extendedUserDataFromSnapshot(snapshot));
+    } catch (e) {
+      print(e.toString());
+      return Stream.value(ExtendedUserData(
+        uid: "",
+        name: "",
+      ));
+    }
   }
 
   Future updateCartData(CartData data) async {
