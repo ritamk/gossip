@@ -35,7 +35,7 @@ class _SearchListState extends State<SearchList> {
   }
 
   Future<void> _getSearchList(String search) async {
-    _searchList = [];
+    _searchList!.clear();
     if (_fullList!.isEmpty) {
       _fillFullList();
     }

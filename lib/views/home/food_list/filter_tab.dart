@@ -33,7 +33,7 @@ class _FilterTabBarState extends State<FilterTabBar> {
       indicatorColor: Colors.transparent,
       labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
       indicatorPadding: const EdgeInsets.all(0.0),
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0),
     );
   }
 

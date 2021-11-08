@@ -43,6 +43,8 @@ ThemeData mainTheme() {
       titleTextStyle: TextStyle(
         fontSize: 20.0,
         color: Colors.red,
+        fontWeight: FontWeight.bold,
+        fontFamily: "Montserrat",
       ),
       backgroundColor: Colors.white10,
       foregroundColor: Colors.red,
