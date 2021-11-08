@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/food.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/buttons.dart';
