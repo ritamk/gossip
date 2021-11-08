@@ -36,11 +36,11 @@ class _SearchListState extends State<SearchList> {
     if (_fullList!.isEmpty) {
       _fillFullList();
     }
-    _fullList!.forEach((element) {
+    for (Food element in _fullList!) {
       element.name.toLowerCase().contains(search)
           ? _searchList!.add(element)
           : null;
-    });
+    }
   }
 
   @override
