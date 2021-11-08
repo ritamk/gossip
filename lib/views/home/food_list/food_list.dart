@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gossip/models/food.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/loading.dart';
+import 'package:gossip/views/home/food_list/filter_tab.dart';
 import 'package:gossip/views/home/food_list/food_tile.dart';
 
 class FoodList extends StatefulWidget {
@@ -62,36 +63,13 @@ class _FoodListState extends State<FoodList>
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          TabBar(
-            tabs: <Widget>[
-              Container(
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  child: const Text("All",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red))),
-              Container(
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  child: const Text("Pizza",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red))),
-              Container(
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  child: const Text("Starter",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red))),
-            ],
-            controller: _tabController,
-          ),
-          const SizedBox(height: 16.0, width: 0.0),
+          Theme(
+              data: Theme.of(context).copyWith(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+              ),
+              child: FilterTabBar(tabController: _tabController)),
+          const SizedBox(height: 8.0, width: 0.0),
           Expanded(
             child: CustomScrollView(
               slivers: <Widget>[
