@@ -37,12 +37,14 @@ class _SearchListState extends State<SearchList> {
 
   Future<void> _getSearchList(String search) async {
     _searchList = [];
-    _fillFullList();
-    _fullList!.forEach((element) {
+    if (_fullList!.isEmpty) {
+      _fillFullList();
+    }
+    for (Food element in _fullList!) {
       element.name.toLowerCase().contains(search)
           ? _searchList!.add(element)
           : null;
-    });
+    }
   }
 
   @override
