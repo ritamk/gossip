@@ -13,4 +13,6 @@ final userModelStreamProvider = StreamProvider<UserModel?>((ref) => ref
     .map((User? user) => (user != null) ? UserModel(uid: user.uid) : null));
 
 /// Returns the index of selected bottom navigation bar item.
-final bottomNavSelectedProvider = StateProvider((ref) => 0);
+final bottomNavSelectedProvider = StateProvider<int>((ref) => 0);
+
+final filterTabBarProvider = StateProvider<int>((ref) => 0);

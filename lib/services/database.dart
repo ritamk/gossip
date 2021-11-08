@@ -5,9 +5,10 @@ import 'package:gossip/models/order.dart';
 import 'package:gossip/models/user.dart';
 
 class DatabaseService {
-  DatabaseService({this.uid, this.foodID});
+  DatabaseService({this.uid, this.foodID, this.filter});
   final String? uid;
   final String? foodID;
+  final String? filter;
 
   final CollectionReference _menuCollection =
       FirebaseFirestore.instance.collection("Menu");
@@ -224,6 +225,19 @@ class DatabaseService {
   Future<List<Food>?> get searchFoodList async {
     try {
       QuerySnapshot snapshot = await _menuCollection.get();
+      List<QueryDocumentSnapshot> snapDocs = snapshot.docs;
+      return await compute<List<QueryDocumentSnapshot>, List<Food>>(
+          isolateFoodGetter, snapDocs);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<List<Food>?> get filteredFoodList async {
+    try {
+      QuerySnapshot snapshot =
+          await _menuCollection.where("type", isEqualTo: filter).get();
       List<QueryDocumentSnapshot> snapDocs = snapshot.docs;
       return await compute<List<QueryDocumentSnapshot>, List<Food>>(
           isolateFoodGetter, snapDocs);

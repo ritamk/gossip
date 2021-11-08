@@ -56,7 +56,7 @@ class _CartListState extends State<CartList> {
                               index: index,
                               reloadCart: _initCart(),
                             )
-                          : const Loading(white: false, rad: 14);
+                          : const Loading(white: false);
                     },
                   )
                 : const Loading(white: false, rad: 14),
