@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/food.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/buttons.dart';
@@ -26,16 +28,16 @@ class _SearchListState extends State<SearchList> {
   }
 
   Future<void> _fillFullList() async {
-    await DatabaseService()
-        .searchFoodList
-        .then((value) => setState(() => _fullList = value));
+    if (_fullList!.isEmpty) {
+      await DatabaseService()
+          .searchFoodList
+          .then((value) => setState(() => _fullList = value));
+    }
   }
 
   Future<void> _getSearchList(String search) async {
     _searchList = [];
-    if (_fullList!.isEmpty) {
-      _fillFullList();
-    }
+    _fillFullList();
     _fullList!.forEach((element) {
       element.name.toLowerCase().contains(search)
           ? _searchList!.add(element)

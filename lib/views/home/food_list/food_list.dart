@@ -12,10 +12,12 @@ class FoodList extends StatefulWidget {
   _FoodListState createState() => _FoodListState();
 }
 
-class _FoodListState extends State<FoodList> {
+class _FoodListState extends State<FoodList>
+    with SingleTickerProviderStateMixin {
   List<Food>? _foodList = [];
   bool _moreFood = true;
   final ScrollController _scrollController = ScrollController();
+  late TabController _tabController;
 
   Future<void> _initFoodList() async {
     return await DatabaseService()
@@ -43,11 +45,13 @@ class _FoodListState extends State<FoodList> {
         _moreFood ? _moreFoodList() : null;
       }
     });
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -55,28 +59,66 @@ class _FoodListState extends State<FoodList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Menu")),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
-          SliverToBoxAdapter(
-            child: _foodList?.isNotEmpty ?? false
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: _foodList!.length + 1,
-                    itemBuilder: (BuildContext context, int index) {
-                      return index < _foodList!.length
-                          ? FoodListTile(food: _foodList![index])
-                          : _moreFood
-                              ? const Loading(white: false)
-                              : const SizedBox(height: 0.0, width: 0.0);
-                    })
-                : const Loading(white: false, rad: 14.0),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          TabBar(
+            tabs: <Widget>[
+              Container(
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  child: const Text("All",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red))),
+              Container(
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  child: const Text("Pizza",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red))),
+              Container(
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  child: const Text("Starter",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red))),
+            ],
+            controller: _tabController,
+          ),
+          const SizedBox(height: 16.0, width: 0.0),
+          Expanded(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                CupertinoSliverRefreshControl(
+                    onRefresh: () async => _initFoodList()),
+                SliverToBoxAdapter(
+                  child: _foodList?.isNotEmpty ?? false
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: _foodList!.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            return index < _foodList!.length
+                                ? FoodListTile(food: _foodList![index])
+                                : _moreFood
+                                    ? const Loading(white: false)
+                                    : const SizedBox(height: 0.0, width: 0.0);
+                          })
+                      : const Loading(white: false, rad: 14.0),
+                ),
+              ],
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              controller: _scrollController,
+            ),
           ),
         ],
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        controller: _scrollController,
       ),
     );
   }
