@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/shared/loading.dart';
-import 'package:gossip/views/home/order_list/order_Tile.dart';
 import 'package:gossip/views/home/order_list/order_tile.dart';
 
 class OrderList extends StatefulWidget {
