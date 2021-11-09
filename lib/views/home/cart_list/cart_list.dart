@@ -15,6 +15,7 @@ class CartList extends StatefulWidget {
 
 class _CartListState extends State<CartList> {
   List<CartData>? _cartFood = [];
+  late double _containerWidth;
 
   Future<void> _initCart() async {
     return DatabaseService(uid: widget.uid)
@@ -35,6 +36,8 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
+    _containerWidth = MediaQuery.of(context).size.width - 50.0;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Cart")),
       body: CustomScrollView(
@@ -65,26 +68,69 @@ class _CartListState extends State<CartList> {
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _cartFood != null
           ? _cartFood!.isNotEmpty
               ? FloatingActionButton.extended(
+                  extendedPadding: const EdgeInsets.all(0.0),
+                  backgroundColor: Colors.grey.shade300,
+                  foregroundColor: Colors.red,
                   splashColor: Colors.purple,
                   highlightElevation: 0.0,
                   elevation: 0.0,
                   onPressed: () {},
-                  label: Row(
-                    children: const <Widget>[
-                      Icon(Icons.check),
-                      SizedBox(width: 5.0, height: 0.0),
-                      Text(
-                        "Order",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                  label: SizedBox(
+                    width: _containerWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            const SizedBox(width: 16.0, height: 0.0),
+                            const Text(
+                              "Total: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text("₹${orderTotal(_cartFood).toString()}",
+                                style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(12.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25.0),
+                              color: Colors.red),
+                          child: Row(
+                            children: const <Widget>[
+                              Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 5.0, height: 0.0),
+                              Text("Order",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : const SizedBox(height: 0.0, width: 0.0)
           : const SizedBox(height: 0.0, width: 0.0),
     );
+  }
+
+  int orderTotal(List<CartData>? cartFood) {
+    int total = 0;
+    for (CartData element in cartFood!) {
+      total += element.discPrice ?? element.price;
+    }
+    return total;
   }
 }
