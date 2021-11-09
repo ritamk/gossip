@@ -17,6 +17,7 @@ class SearchList extends StatefulWidget {
 
 class _SearchListState extends State<SearchList> {
   List<Food>? _fullList = [];
+  // ignore: prefer_final_fields
   List<Food>? _searchList = [];
   String _text = "";
 

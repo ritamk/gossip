@@ -13,7 +13,7 @@ class OrderTile extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
@@ -38,17 +38,24 @@ class OrderTile extends StatelessWidget {
                 style: const TextStyle(fontSize: 16.0, color: Colors.black87)),
           ],
         ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Text(
-              "Ordered on:",
-              style: TextStyle(color: Colors.black87),
+            const Divider(color: Colors.black),
+            const SizedBox(width: 5.0, height: 0.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  "Ordered on:",
+                  style: TextStyle(color: Colors.black87),
+                ),
+                Text(DateFormat.yMMMd().format(_dateTime)),
+                Text("${DateFormat.Hms().format(_dateTime)} Hrs."),
+              ],
             ),
-            Text(DateFormat.yMMMd().format(_dateTime)),
-            Text("${DateFormat.Hms().format(_dateTime)} Hrs."),
           ],
         ),
       ),

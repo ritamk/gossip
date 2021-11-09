@@ -106,6 +106,16 @@ class _FoodListState extends State<FoodList>
                   tabBarTile(1),
                   tabBarTile(2),
                 ],
+                labelStyle: const TextStyle(
+                    fontSize: 16.0,
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold),
+                labelColor: Colors.white,
+                unselectedLabelStyle: const TextStyle(
+                    fontSize: 16.0,
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold),
+                unselectedLabelColor: Colors.red,
                 controller: _tabController,
                 isScrollable: true,
                 physics: const BouncingScrollPhysics(
@@ -114,11 +124,8 @@ class _FoodListState extends State<FoodList>
                 indicatorColor: Colors.transparent,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 indicatorPadding: const EdgeInsets.all(0.0),
-                padding: const EdgeInsets.only(
-                    right: 10.0, left: 10.0, bottom: 10.0),
+                padding: const EdgeInsets.all(10.0),
               ),
-              // FilterTabBar(
-              //     tabController: _tabController, filterChange: filterChange),
             ),
             toolbarHeight: 64.0,
             elevation: 0.0,
@@ -155,16 +162,7 @@ class _FoodListState extends State<FoodList>
       padding: const EdgeInsets.symmetric(horizontal: 18.0),
       alignment: Alignment.center,
       height: 50.0,
-      child: Text(
-        _filterTitles[index],
-        style: _currIndex == index
-            ? const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white)
-            : const TextStyle(
-                fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.red),
-      ),
+      child: Text(_filterTitles[index]),
       decoration: _currIndex == index
           ? BoxDecoration(
               color: Colors.red,
