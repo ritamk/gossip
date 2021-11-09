@@ -73,6 +73,7 @@ class _SearchListState extends State<SearchList> {
               FocusScope.of(context).unfocus();
               await _getSearchList(_text.toLowerCase());
             },
+            textInputAction: TextInputAction.search,
           ),
         ),
         actions: <Widget>[

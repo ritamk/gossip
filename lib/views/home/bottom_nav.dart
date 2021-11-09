@@ -21,8 +21,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       return BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
         currentIndex: ref(bottomNavSelectedProvider).state,
         onTap: (index) =>
             setState(() => ref(bottomNavSelectedProvider).state = index),
@@ -125,6 +123,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               label: "Home"),
         ],
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
       );
     });

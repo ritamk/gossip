@@ -23,3 +23,13 @@ class Food {
   final String? about;
   final String? image;
 }
+
+class FilterCompute {
+  FilterCompute({
+    required this.type,
+    required this.foodList,
+  });
+
+  final String type;
+  final List<Food>? foodList;
+}

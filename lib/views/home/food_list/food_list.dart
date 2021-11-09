@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/food.dart';
@@ -16,7 +17,7 @@ class FoodList extends StatefulWidget {
 class _FoodListState extends State<FoodList>
     with SingleTickerProviderStateMixin {
   List<Food>? _foodList = [];
-
+  List<Food>? _filteredList = [];
   bool _moreFood = true;
   final ScrollController _scrollController = ScrollController();
   late TabController _tabController;
@@ -49,14 +50,9 @@ class _FoodListState extends State<FoodList>
   }
 
   Future<void> _filterChange(String filter) async {
-    if (filter.isNotEmpty) {
-      _foodList?.clear();
-      return await DatabaseService(filter: filter)
-          .filteredFoodList
-          .then((value) => setState(() => _foodList = value));
-    } else {
-      return await _initFoodList();
-    }
+    await compute<FilterCompute, List<Food>>(
+            filteredFoodList, FilterCompute(type: filter, foodList: _foodList))
+        .then((value) => setState(() => _filteredList = value));
   }
 
   @override
@@ -66,10 +62,10 @@ class _FoodListState extends State<FoodList>
     _scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
-        _moreFood ? _moreFoodList() : null;
+        _moreFoodList();
       }
     });
-    _tabController = TabController(length: _filters.length, vsync: this);
+    _tabController = TabController(length: _filterTitles.length, vsync: this);
   }
 
   @override
@@ -124,7 +120,6 @@ class _FoodListState extends State<FoodList>
                 indicatorColor: Colors.transparent,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 indicatorPadding: const EdgeInsets.all(0.0),
-                padding: const EdgeInsets.all(10.0),
               ),
             ),
             toolbarHeight: 64.0,
@@ -138,13 +133,24 @@ class _FoodListState extends State<FoodList>
                     return ListView.builder(
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: _foodList!.length + 1,
+                        itemCount: !(_currIndex > 0)
+                            ? _foodList!.length + 1
+                            : _filteredList!.length + 1,
                         itemBuilder: (BuildContext context, int index) {
-                          return index < _foodList!.length
-                              ? FoodListTile(food: _foodList![index])
-                              : _moreFood
-                                  ? const Loading(white: false)
-                                  : const SizedBox(height: 0.0, width: 0.0);
+                          switch (_currIndex) {
+                            case 0:
+                              return index < _foodList!.length
+                                  ? FoodListTile(food: _foodList![index])
+                                  : _moreFood
+                                      ? const Loading(white: false)
+                                      : const SizedBox(height: 0.0, width: 0.0);
+                            default:
+                              return index < _filteredList!.length
+                                  ? FoodListTile(food: _filteredList![index])
+                                  : _moreFood
+                                      ? const Loading(white: false)
+                                      : const SizedBox(height: 0.0, width: 0.0);
+                          }
                         });
                   })
                 : const Loading(white: false, rad: 14.0),
@@ -178,4 +184,14 @@ class _FoodListState extends State<FoodList>
               color: Colors.white, borderRadius: BorderRadius.circular(25.0)),
     );
   }
+}
+
+List<Food> filteredFoodList(FilterCompute filterCompute) {
+  List<Food>? list = <Food>[];
+
+  for (Food item in filterCompute.foodList!) {
+    item.type == filterCompute.type ? list.add(item) : null;
+  }
+
+  return list;
 }
