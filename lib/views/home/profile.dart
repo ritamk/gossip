@@ -139,10 +139,21 @@ class _ProfileState extends State<Profile> {
                         decoration: profileInputDecoration()
                             .copyWith(helperText: "Pin"),
                         onChanged: (val) => _pin = val,
-                        validator: ((val) =>
-                            val!.length == 6 && val.contains(RegExp("[0-9]"))
-                                ? null
-                                : "Please enter a valid pin number"),
+                        validator: ((val) {
+                          if (val!.length == 6 &&
+                              val.contains(RegExp("[0-9]"))) {
+                            if (val == "713101" ||
+                                val == "713103" ||
+                                val == "713104") {
+                              return null;
+                            } else {
+                              "We're sorry, but we don't serve in your area";
+                              return null;
+                            }
+                          } else {
+                            return "Please enter a valid pin number";
+                          }
+                        }),
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (val) =>
                             FocusScope.of(context).unfocus(),
