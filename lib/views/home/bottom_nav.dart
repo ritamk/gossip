@@ -19,11 +19,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
+    return Consumer(builder: (_, ref, __) {
       return BottomNavigationBar(
-        currentIndex: ref(bottomNavSelectedProvider).state,
-        onTap: (index) =>
-            setState(() => ref(bottomNavSelectedProvider).state = index),
+        currentIndex: ref.watch(bottomNavSelectedProvider),
+        onTap: (index) => setState(
+            () => ref.watch(bottomNavSelectedProvider.state).state = index),
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined, size: 30.0),

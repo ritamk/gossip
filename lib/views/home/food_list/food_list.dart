@@ -129,7 +129,7 @@ class _FoodListState extends State<FoodList>
           CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
           SliverToBoxAdapter(
             child: _foodList?.isNotEmpty ?? false
-                ? Consumer(builder: (context, ref, child) {
+                ? Consumer(builder: (_, ref, __) {
                     return ListView.builder(
                         shrinkWrap: true,
                         primary: false,

@@ -92,53 +92,51 @@ class _AddToCartButtonsState extends State<AddToCartButtons> {
         ),
         const SizedBox(height: 15.0, width: 0.0),
         // Add to cart button
-        Consumer(builder: (context, ref, child) {
-          return Consumer(builder: (context, ref, child) {
-            return InkWell(
-              onTap: () async {
-                await addToCart(context, ref);
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 14.0),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: !_addToCartLoading
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          Icon(
-                            Icons.add_circle_outline,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            height: 0.0,
-                            width: 8.0,
-                          ),
-                          Text(
-                            "Add to Cart",
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )
-                    : const Loading(white: true),
+        Consumer(builder: (_, ref, __) {
+          return InkWell(
+            onTap: () async {
+              await addToCart(context, ref);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 14.0),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(25.0),
               ),
-            );
-          });
+              child: !_addToCartLoading
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Icon(
+                          Icons.add_circle_outline,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 0.0,
+                          width: 8.0,
+                        ),
+                        Text(
+                          "Add to Cart",
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                  : const Loading(white: true),
+            ),
+          );
         }),
       ],
     );
   }
 
-  Future<void> addToCart(BuildContext context, ScopedReader ref) async {
+  Future<void> addToCart(BuildContext context, WidgetRef ref) async {
     setState(() => _addToCartLoading = true);
-    DatabaseService(uid: ref(userModelStreamProvider).data!.value!.uid)
+    DatabaseService(uid: ref.watch(userModelStreamProvider).value!.uid)
         .updateCartData(CartData(
           name: widget.food.name,
           price: widget.food.price,

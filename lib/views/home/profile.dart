@@ -147,8 +147,7 @@ class _ProfileState extends State<Profile> {
                                 val == "713104") {
                               return null;
                             } else {
-                              "We're sorry, but we don't serve in your area";
-                              return null;
+                              return "We're sorry, but we don't serve in your area";
                             }
                           } else {
                             return "Please enter a valid pin number";

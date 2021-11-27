@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: mainTheme(),
       home: Consumer(
-          builder: (context, ref, child) =>
-              ref(userModelStreamProvider).data?.value?.uid != null
+          builder: (_, ref, __) =>
+              ref.watch(userModelStreamProvider).value?.uid != null
                   ? const HomePage()
                   : const AuthPage()),
     );
