@@ -15,6 +15,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String userID = ref.watch((userModelStreamProvider)).value!.uid;
+    final int currPage = ref.watch(bottomNavSelectedProvider);
 
     final List<Widget> _pages = [
       const FoodList(),
@@ -25,7 +26,7 @@ class HomePage extends ConsumerWidget {
     ];
 
     return Scaffold(
-      body: _pages[ref.watch(bottomNavSelectedProvider)],
+      body: _pages[currPage],
       bottomNavigationBar: BottomNavBar(uid: userID),
     );
   }

@@ -52,9 +52,8 @@ class AuthPage extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 24.0),
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 2.0),
-                    decoration: authButtonDecoration().copyWith(
-                      color: Colors.redAccent.shade200,
-                    ),
+                    decoration: authButtonDecoration()
+                        .copyWith(color: Colors.redAccent.shade200),
                     child: TextButton(
                       style: const ButtonStyle(
                         splashFactory: NoSplash.splashFactory,

@@ -122,7 +122,7 @@ class _CartListState extends State<CartList> {
                   ),
                 )
               : const SizedBox(height: 0.0, width: 0.0)
-          : const SizedBox(height: 0.0, width: 0.0),
+          : const Loading(white: false, rad: 14.0),
     );
   }
 
