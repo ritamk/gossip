@@ -121,7 +121,7 @@ class _CartListState extends State<CartList> {
                     ),
                   ),
                 )
-              : const Center(child: Loading(white: false, rad: 14.0))
+              : const SizedBox(width: 0.0, height: 0.0)
           : const SizedBox(width: 0.0, height: 0.0),
     );
   }
