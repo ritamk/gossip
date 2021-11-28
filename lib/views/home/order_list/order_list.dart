@@ -51,7 +51,7 @@ class _OrderListState extends State<OrderList> {
                         },
                       )
                     : const Loading(white: false, rad: 14.0)
-                : const Loading(white: false, rad: 14.0),
+                : const SizedBox(width: 0.0, height: 0.0),
           ),
         ],
         physics: const BouncingScrollPhysics(
