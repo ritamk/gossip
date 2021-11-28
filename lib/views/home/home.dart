@@ -25,9 +25,14 @@ class HomePage extends ConsumerWidget {
       Profile(uid: userID),
     ];
 
-    return Scaffold(
-      body: _pages[currPage],
-      bottomNavigationBar: BottomNavBar(uid: userID),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          body: _pages[currPage],
+          bottomNavigationBar: BottomNavBar(uid: userID),
+        ),
+      ),
     );
   }
 }

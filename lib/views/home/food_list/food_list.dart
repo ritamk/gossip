@@ -77,89 +77,87 @@ class _FoodListState extends State<FoodList>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          const SliverAppBar(
-            title: Text("Menu"),
-            elevation: 0.0,
-          ),
-          SliverAppBar(
-            title: Theme(
-              data: Theme.of(context).copyWith(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-              ),
-              child: TabBar(
-                onTap: (val) {
-                  setState(() {
-                    _currIndex = val;
-                    _filterChange(_filters[val]);
-                  });
-                },
-                tabs: <Widget>[
-                  tabBarTile(0),
-                  tabBarTile(1),
-                  tabBarTile(2),
-                ],
-                labelStyle: const TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Montserrat",
-                    fontWeight: FontWeight.bold),
-                labelColor: Colors.white,
-                unselectedLabelStyle: const TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Montserrat",
-                    fontWeight: FontWeight.bold),
-                unselectedLabelColor: Colors.red,
-                controller: _tabController,
-                isScrollable: true,
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorColor: Colors.transparent,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                indicatorPadding: const EdgeInsets.all(0.0),
-              ),
+    return CustomScrollView(
+      slivers: <Widget>[
+        const SliverAppBar(
+          title: Text("Menu"),
+          elevation: 0.0,
+        ),
+        SliverAppBar(
+          title: Theme(
+            data: Theme.of(context).copyWith(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
             ),
-            toolbarHeight: 64.0,
-            elevation: 0.0,
-            pinned: true,
+            child: TabBar(
+              onTap: (val) {
+                setState(() {
+                  _currIndex = val;
+                  _filterChange(_filters[val]);
+                });
+              },
+              tabs: <Widget>[
+                tabBarTile(0),
+                tabBarTile(1),
+                tabBarTile(2),
+              ],
+              labelStyle: const TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.bold),
+              labelColor: Colors.white,
+              unselectedLabelStyle: const TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.bold),
+              unselectedLabelColor: Colors.red,
+              controller: _tabController,
+              isScrollable: true,
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: Colors.transparent,
+              labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+              indicatorPadding: const EdgeInsets.all(0.0),
+            ),
           ),
-          CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
-          SliverToBoxAdapter(
-            child: _foodList?.isNotEmpty ?? false
-                ? Consumer(builder: (_, ref, __) {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: !(_currIndex > 0)
-                            ? _foodList!.length + 1
-                            : _filteredList!.length + 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          switch (_currIndex) {
-                            case 0:
-                              return index < _foodList!.length
-                                  ? FoodListTile(food: _foodList![index])
-                                  : _moreFood
-                                      ? const Loading(white: false)
-                                      : const SizedBox(height: 0.0, width: 0.0);
-                            default:
-                              return index < _filteredList!.length
-                                  ? FoodListTile(food: _filteredList![index])
-                                  : _moreFood
-                                      ? const Loading(white: false)
-                                      : const SizedBox(height: 0.0, width: 0.0);
-                          }
-                        });
-                  })
-                : const Loading(white: false, rad: 14.0),
-          ),
-        ],
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        controller: _scrollController,
-      ),
+          toolbarHeight: 64.0,
+          elevation: 0.0,
+          pinned: true,
+        ),
+        CupertinoSliverRefreshControl(onRefresh: () async => _initFoodList()),
+        SliverToBoxAdapter(
+          child: _foodList?.isNotEmpty ?? false
+              ? Consumer(builder: (_, ref, __) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: !(_currIndex > 0)
+                          ? _foodList!.length + 1
+                          : _filteredList!.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        switch (_currIndex) {
+                          case 0:
+                            return index < _foodList!.length
+                                ? FoodListTile(food: _foodList![index])
+                                : _moreFood
+                                    ? const Loading(white: false)
+                                    : const SizedBox(height: 0.0, width: 0.0);
+                          default:
+                            return index < _filteredList!.length
+                                ? FoodListTile(food: _filteredList![index])
+                                : _moreFood
+                                    ? const Loading(white: false)
+                                    : const SizedBox(height: 0.0, width: 0.0);
+                        }
+                      });
+                })
+              : const Loading(white: false, rad: 14.0),
+        ),
+      ],
+      physics:
+          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      controller: _scrollController,
     );
   }
 

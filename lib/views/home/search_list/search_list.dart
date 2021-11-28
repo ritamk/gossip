@@ -54,71 +54,68 @@ class _SearchListState extends State<SearchList> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Align(
-            alignment: Alignment.centerLeft,
-            child: TextField(
-              decoration: profileInputDecoration().copyWith(
-                  hintText: "Search",
-                  suffixIcon: IconButton(
-                    onPressed: () async =>
-                        await _getSearchList(_text.toLowerCase()),
-                    icon: const Icon(Icons.search),
-                  )),
-              autofocus: true,
-              onChanged: (val) => _text = val,
-              onSubmitted: (val) async {
-                FocusScope.of(context).unfocus();
-                await _getSearchList(_text.toLowerCase());
-              },
-              textInputAction: TextInputAction.search,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: TextField(
+            decoration: profileInputDecoration().copyWith(
+                hintText: "Search",
+                suffixIcon: IconButton(
+                  onPressed: () async =>
+                      await _getSearchList(_text.toLowerCase()),
+                  icon: const Icon(Icons.search),
+                )),
+            autofocus: true,
+            onChanged: (val) => _text = val,
+            onSubmitted: (val) async {
+              FocusScope.of(context).unfocus();
+              await _getSearchList(_text.toLowerCase());
+            },
+            textInputAction: TextInputAction.search,
           ),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () => Navigator.of(context).push(
-                    CupertinoDialogRoute(
-                        builder: (builder) => const SearchHelpDialog(),
-                        context: context)),
-                icon: const Icon(Icons.help_rounded),
-                tooltip: "Info"),
-            const SizedBox(width: 16.0, height: 0.0),
-          ],
         ),
-        body: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: SingleChildScrollView(
-            primary: true,
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                // Custom divider
-                Container(
-                  width: 28.0,
-                  height: 4.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.0),
-                      color: Colors.black26),
-                ),
-                const Text("\nSearch Result:\n"),
-                _searchList?.isNotEmpty ?? false
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: _searchList!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return FoodListTile(food: _searchList![index]);
-                        },
-                      )
-                    : const Center(child: Loading(white: false, rad: 14.0)),
-              ],
-            ),
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () => Navigator.of(context).push(CupertinoDialogRoute(
+                  builder: (builder) => const SearchHelpDialog(),
+                  context: context)),
+              icon: const Icon(Icons.help_rounded),
+              tooltip: "Info"),
+          const SizedBox(width: 16.0, height: 0.0),
+        ],
+      ),
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SingleChildScrollView(
+          primary: true,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              // Custom divider
+              Container(
+                width: 28.0,
+                height: 4.0,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    color: Colors.black26),
+              ),
+              const Text("\nSearch Result:\n"),
+              _searchList?.isNotEmpty ?? false
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: _searchList!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return FoodListTile(food: _searchList![index]);
+                      },
+                    )
+                  : const Center(child: Loading(white: false, rad: 14.0)),
+            ],
           ),
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
         ),
       ),
     );
