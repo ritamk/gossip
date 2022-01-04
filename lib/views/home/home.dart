@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/services/providers.dart';
@@ -26,7 +25,7 @@ class HomePage extends ConsumerWidget {
     ];
 
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       child: SafeArea(
         child: Scaffold(
           body: _pages[currPage],

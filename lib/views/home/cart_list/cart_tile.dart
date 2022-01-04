@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/views/home/cart_list/order_button.dart';
 
@@ -7,11 +8,13 @@ class CartTile extends StatelessWidget {
   const CartTile(
       {Key? key,
       required this.cartData,
+      required this.qty,
       required this.uid,
       required this.index,
       required this.reloadCart})
       : super(key: key);
   final CartData cartData;
+  final StateController<List<CartData>?> qty;
   final String uid;
   final int index;
   final Future<void> reloadCart;
@@ -88,6 +91,7 @@ class CartTile extends StatelessWidget {
                 ),
                 CartTileOrderButton(
                   cartData: cartData,
+                  qty: qty,
                   uid: uid,
                   index: index,
                   reloadCart: reloadCart,

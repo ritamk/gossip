@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/services/database.dart';
+import 'package:gossip/services/providers.dart';
 import 'package:gossip/shared/loading.dart';
 import 'package:gossip/views/home/cart_list/cart_tile.dart';
+import 'package:gossip/views/home/cart_list/multi_delivery_dialog.dart';
 
-class CartList extends StatefulWidget {
+class CartList extends ConsumerStatefulWidget {
   const CartList({Key? key, required this.uid}) : super(key: key);
   final String uid;
 
@@ -13,14 +16,10 @@ class CartList extends StatefulWidget {
   _CartListState createState() => _CartListState();
 }
 
-class _CartListState extends State<CartList> {
-  List<CartData>? _cartFood = [];
-  late double _containerWidth;
-
+class _CartListState extends ConsumerState<CartList> {
   Future<void> _initCart() async {
-    return DatabaseService(uid: widget.uid)
-        .cartList
-        .then((value) => setState(() => _cartFood = value));
+    return DatabaseService(uid: widget.uid).cartList.then((value) =>
+        setState(() => ref.watch(cartListProvider.state).state = value));
   }
 
   @override
@@ -36,25 +35,24 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
-    _containerWidth = MediaQuery.of(context).size.width - 50.0;
+    final StateController<List<CartData>?> cartFoodController =
+        ref.watch(cartListProvider.state);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Cart")),
       body: CustomScrollView(
         slivers: <Widget>[
-          CupertinoSliverRefreshControl(
-            onRefresh: () async => _initCart(),
-          ),
           SliverToBoxAdapter(
-            child: _cartFood != null
+            child: cartFoodController.state != null
                 ? ListView.builder(
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: _cartFood!.length,
+                    itemCount: cartFoodController.state?.length ?? 0,
                     itemBuilder: (BuildContext context, int index) {
-                      return _cartFood!.isNotEmpty
+                      return cartFoodController.state!.isNotEmpty
                           ? CartTile(
-                              cartData: _cartFood![index],
+                              cartData: cartFoodController.state![index],
+                              qty: cartFoodController,
                               uid: widget.uid,
                               index: index,
                               reloadCart: _initCart(),
@@ -68,57 +66,24 @@ class _CartListState extends State<CartList> {
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _cartFood != null
-          ? _cartFood!.isNotEmpty
+      floatingActionButton: cartFoodController.state != null
+          ? cartFoodController.state!.isNotEmpty
               ? FloatingActionButton.extended(
-                  extendedPadding: const EdgeInsets.all(0.0),
-                  backgroundColor: Colors.grey.shade300,
-                  foregroundColor: Colors.red,
                   splashColor: Colors.purple,
                   highlightElevation: 0.0,
                   elevation: 0.0,
-                  onPressed: () {},
-                  label: SizedBox(
-                    width: _containerWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            const SizedBox(width: 16.0, height: 0.0),
-                            const Text(
-                              "Total: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text("₹${orderTotal(_cartFood).toString()}",
-                                style: const TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(12.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              color: Colors.red),
-                          child: Row(
-                            children: const <Widget>[
-                              Icon(
-                                Icons.check,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 5.0, height: 0.0),
-                              Text("Order",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                  onPressed: () => Navigator.of(context).push(
+                      CupertinoDialogRoute(
+                          builder: (builder) => ConfirmMultiOrderDialog(
+                              uid: widget.uid, reloadCart: _initCart()),
+                          context: context)),
+                  label: Row(
+                    children: const <Widget>[
+                      Icon(Icons.check),
+                      SizedBox(width: 5.0, height: 0.0),
+                      Text("Order",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
                   ),
                 )
               : const SizedBox(width: 0.0, height: 0.0)
@@ -126,9 +91,9 @@ class _CartListState extends State<CartList> {
     );
   }
 
-  int orderTotal(List<CartData>? cartFood) {
+  int orderTotal(List<CartData>? cartFoodController) {
     int total = 0;
-    for (CartData element in cartFood!) {
+    for (CartData element in cartFoodController!) {
       total += element.discPrice ?? element.price;
     }
     return total;

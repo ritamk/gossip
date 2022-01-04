@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gossip/models/order.dart';
 import 'package:gossip/models/user.dart';
 
 /// Returns FirebaseAuth instance. Helps with userModelStreamProvider.
@@ -16,3 +17,5 @@ final userModelStreamProvider = StreamProvider<UserModel?>((ref) => ref
 final bottomNavSelectedProvider = StateProvider<int>((ref) => 0);
 
 final filterTabBarProvider = StateProvider<int>((ref) => 0);
+
+final cartListProvider = StateProvider<List<CartData>?>((ref) => []);

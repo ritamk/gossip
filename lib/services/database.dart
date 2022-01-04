@@ -118,6 +118,19 @@ class DatabaseService {
     }
   }
 
+  Future emptyCart() async {
+    try {
+      DocumentReference snapRef = _userCollection.doc(uid);
+      DocumentSnapshot snap = await snapRef.get();
+      List<dynamic> cartList = snap.get("cart");
+      cartList.clear();
+      return await snapRef.update({"cart": cartList});
+    } catch (e) {
+      print(e.toString());
+      return 1;
+    }
+  }
+
   int _cartCountFromSnapshot(DocumentSnapshot snapshot) {
     try {
       final List<dynamic> cartSnap = snapshot.get("cart");
@@ -170,6 +183,21 @@ class DatabaseService {
             "qty": data.qty,
             "time": Timestamp.now(),
             "delivery": data.delivery,
+          }
+        ])
+      });
+    } catch (e) {
+      print(e.toString());
+      return 1;
+    }
+  }
+
+  Future updateUserMultiOrders(List<OrderData> data) async {
+    try {
+      return await _userCollection.doc(uid).update({
+        "order": FieldValue.arrayUnion([
+          {
+            data,
           }
         ])
       });

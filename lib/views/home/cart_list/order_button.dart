@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gossip/models/order.dart';
 import 'package:gossip/services/database.dart';
 import 'package:gossip/views/home/cart_list/delivery_dialog.dart';
@@ -8,11 +9,13 @@ class CartTileOrderButton extends StatefulWidget {
   const CartTileOrderButton(
       {Key? key,
       required this.cartData,
+      required this.qty,
       required this.uid,
       required this.index,
       required this.reloadCart})
       : super(key: key);
   final CartData cartData;
+  final StateController<List<CartData>?> qty;
   final String uid;
   final int index;
   final Future<void> reloadCart;
@@ -27,7 +30,7 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
   @override
   void initState() {
     super.initState();
-    _qty = int.parse(widget.cartData.qty);
+    _qty = int.parse(widget.qty.state![widget.index].qty);
   }
 
   @override
@@ -47,10 +50,10 @@ class _CartTileOrderButtonState extends State<CartTileOrderButton> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             IconButton(
-              onPressed: () => reduceQty(),
-              icon: const Icon(Icons.remove, color: Colors.black54, size: 18.0),
-              tooltip: "Reduce quantity",
-            ),
+                onPressed: () => reduceQty(),
+                icon:
+                    const Icon(Icons.remove, color: Colors.black54, size: 18.0),
+                tooltip: "Reduce quantity"),
             Text(
               _qty.toString(),
               style: const TextStyle(
